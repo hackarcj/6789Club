@@ -1,0 +1,77 @@
+﻿@{
+    
+}
+    <style type="text/css" media="screen">
+        .login-main {
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            margin: 0 10px;
+        }
+
+        .login {
+            width: 80%;
+            max-width: 250px;
+        }
+
+            .login .login-p {
+                margin: 12px 0;
+                display: flex;
+                justify-content: center;
+            }
+
+                .login .login-p input {
+                    width: 100%;
+                    line-height: 30px;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 4px;
+                    font-size: 13px;
+                    padding-left: 8px;
+                    font-family: "open sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+                }
+
+                .login .login-p p {
+                    width: 100%;
+                    text-align: right;
+                }
+
+        .login-p .btn {
+            width: 100%;
+            line-height: 25px;
+            margin-top: 8px;
+        }
+
+        ::-webkit-input-placeholder {
+            color: #999;
+        }
+
+           :-moz-placeholder {
+            color: #999;
+        }
+
+           :-ms-input-placeholder {
+            color: #999;
+        }
+
+           ::-moz-placeholder {
+            color: #999;
+        }
+    </style>
+<form action="/User/Login" method="post">
+    <div class="wrapper wrapper-content login-main">
+        <div class="login">
+            <div class="login-p">
+                <input type="text" name="Account" placeholder="请输入账号">
+            </div>
+            <div class="login-p">
+                <input type="password" name="Password" placeholder="请输入密码">
+            </div>
+            <div class="login-p">
+                <p><label for="" class="f-s-10">忘记密码？</label></p>
+            </div>
+            <div class="login-p">
+                <button type="submit" class="btn btn-primary btn-xs">登录</button>
+            </div>
+        </div>
+    </div>
+</form>

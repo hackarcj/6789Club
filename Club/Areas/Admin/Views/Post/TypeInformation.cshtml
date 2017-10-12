@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "TypeInformation";
+}
+@model Club.Type
+<div class="page-content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div style="clear:both;"></div>
+            <div class="ch_divone">
+                <b>帖子分类信息</b>
+                <form class="form-horizontal" role="form" action="/Admin/Post/TypeInformation" method="post">
+                    <input id="id" name="id" type="hidden" value="@Model.id" />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 类型 </label>
+                        <div class="col-sm-9">
+                            <input type="text" id="name" placeholder="类型" name="name" class="col-xs-10 col-sm-4" value="@Model.Name"/>
+                        </div>
+                    </div>
+                    <div class="clearfix form-actions">
+                        <div class="col-md-offset-3 col-md-9">
+                            <button class="btn btn-info" type="submit">
+                                <i class="ace-icon fa fa-check bigger-110"></i>
+                                提交
+                            </button>
+                            &nbsp; &nbsp; &nbsp;
+                            <button class="btn" type="reset">
+                                <i class="ace-icon fa fa-undo bigger-110"></i>
+                                返回
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.page-content -->

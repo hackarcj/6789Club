@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "PraiseRecord";
+}
+@using Webdiyer.WebControls.Mvc
+@model PagedList<PraiseRecord>
+<div class="page-content">
+
+    <div class="page-header">
+        <h1>
+            用户管理
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                用户点赞列表
+            </small>
+        </h1>
+    </div><!-- /.page-header -->
+    <style>
+    </style>
+    <div class="row">
+        <div class="col-xs-12">
+            <div>
+                <div class="row mt15">
+                    <div class="col-xs-6">
+                        <div class="ch_choose_top">
+                            <div class="h_top_txt">
+                                <input id="keyword" class="h_search_txt" name="kw" type="text" placeholder="请输入关键词" value="@ViewBag.KW">
+                            </div>
+
+                            <input id="search" class="h_button" type="submit" value="查询">
+
+                            <div style="clear: both;"></div>
+                        </div>
+                    </div>                    
+                </div>
+                @using (Html.BeginForm("PraiseRecord", "User", FormMethod.Get))
+                {
+                    <div id="articles">
+                        @Html.Partial("_PraiseRecord", Model)
+                    </div>
+                }
+
+            </div>
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+</div><!-- /.page-content -->
+<script src="/Areas/Admin/Assets/scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script type="text/javascript">$(function () {@{ Ajax.LoadMvcPagerScript(); }});</script>

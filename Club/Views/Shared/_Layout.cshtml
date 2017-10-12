@@ -1,0 +1,149 @@
+﻿@{ 
+    var currentAction = ViewContext.RouteData.Values["action"].ToString().ToLower();
+}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
+    <link href="/Areas/Admin/Assets/styles/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="/Content/css/main.css" />
+    <link rel="stylesheet" href="/Content/css/base.css" />
+    <link rel="stylesheet" href="/Content/font-awesome/css/font-awesome.css-v=4.3.0.css" />
+    <link rel="icon" href="http://bbs.bangke.com/app/views/img/favicon.ico" mce_href="/app/views/img/favicon.ico" type="image/x-icon">
+    <script src="/Content/js/jquery-3.2.1.slim.min.js" language="javascript" type="text/javascript"></script>
+    <script src="/Areas/Admin/Assets/scripts/bootstrap.js"></script>
+    <script src="/Areas/Admin/Assets/scripts/dialog.js"></script>
+</head>
+<body>
+    <div class="flex f-wrap f-just-s">
+        <div id="all" class="bg-rgba-white ux-w-80">
+            <!--header-->
+            <div class="uz-h-55 pa-t-15">
+                <div class="ma-l-30">
+                    <a href="#" class="culb">6789Club</a>
+                    <div class="left ma-l-15  search-main">
+                        <input type="text" class="search" placeholder="请输入您需要查找的内容 …" />
+                    </div>
+                </div>
+                @{
+                    var user = (User)Session["loginuser"];
+                    if (Session["loginuser"] != null)
+                    {
+                        <ul class="uz-w-180 right ma-r-15">
+                            <li>
+                                <a href="/User" title="@user.Name" style="padding: 15px 5px; line-height: 30px;" class=" f-c-gray">
+                                    <img alt="image" id="my-avatar" class="img-circle profile-small-avatar uz-h-26 uz-w-26" src="@user.Image">
+                                    <span class="mobile-hide">@user.Name</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-toggle" href="/Notice"><i class="fa fa-bell-o header-ico"></i></a>
+                            </li>
+                            <li>
+                                <a>
+                                    <i class="fa fa-sign-out header-ico" onclick="p.utk(''); layer.msg('退成成功',function(){reload()});">
+                                    </i>
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <div class="uz-w-180 right ma-r-15">
+                            <a href='@(currentAction=="login"?"/User/Register":"/User/Login")' class="wx bg-c-blue ma-r-4">@(currentAction == "login" ? "注册" : "登录")</a> <a href="#" class="wx bg-c-green gd">更多精彩</a>
+                            <div class="or">or</div>
+                        </div>
+                    }
+                }
+            </div>
+            <!--蓝条-->
+            <div class="blue-bar"></div>
+            <!--main-->
+            <div class="inline-flex f-wrap f-just-s ux-w-100">
+                <div class="ma-t-20 ux-w-95">
+                    <div class="title pa-t-25 bg-c-white ux-w-100">
+                        <div class="uz-w-60 uz-h-60 bg-c-blue bd-r-30 left ma-r-15 ma-l-30"> <img src="/Content/userimages/logo.png" height="60" width="60" /> </div>
+                        <h3 class="ma-t-10">6789俱乐部·因趣而生</h3>
+                        <p class="f-s-12">定期为有相同兴趣的人提供活动，励志做常州最好玩的俱乐部，加入6789俱乐部，我们带你吃喝玩乐玩转生活，趣味无穷。</p>
+                    </div>
+                    <div class="container ux-w-100 ma-t-10">
+                        <div class="row">
+                            @RenderBody()
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--foot-->
+            <div class="bg-c-white ma-t-35">
+                <div class="ux-w-98 f-s-13 bod-t-1 ma-l-15 ma-r-15 pa-t-10">
+                    <div class="right ma-b-10">苏ICP备13055054号-2</div>
+                    <div>Copyright © 2016 江苏嬉戏谷科技有限公司</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function () {            
+            $('.ma_lt').click(
+                function () {
+                    var _s = $(this).index();
+                    $(".ul_s ul").eq(_s).show().siblings().hide();
+                    $(this).addClass('bg-c-blue f-c-white').siblings().removeClass('bg-c-blue f-c-white');
+                })
+            $('.ma_rm').click(
+                function () {
+                    $(this).addClass('ma_rm_on').siblings().removeClass('ma_rm_on');
+                })
+            $('.ma_rmb').click(
+                function () {
+                    $(this).addClass('ma_rmb_on').siblings().removeClass('ma_rmb_on');
+                })
+
+            //弹出框
+            if ('@TempData["Msg"]' != '')
+                {
+                                var d = dialog({
+                                title: '欢迎',
+                                content: '@TempData["Msg"]',
+                                width:300
+                                });
+                                d.show();
+            }
+            //用户注册界面进行新密码验证
+            $("#error").hide();
+            $("#againPassword").bind("input propertychange", function () {
+                var Password = $("#Password").val();
+                var againPassword = $("#againPassword").val();
+                if (Password != againPassword)
+                {
+                    $("#error").show();
+                }
+                else
+                {
+                    $("#error").hide();
+                }
+            })
+
+        })
+        //根据浏览器宽度自适应
+        window.onresize = function () {
+            var width = $(window).width();
+            if (width <= 973) {
+                $("#all").addClass("ux-w-100");
+            }
+            else {
+                $("#all").removeClass("ux-w-100");
+            }
+            if (width <= 550)
+            {
+                $('.search-main').hide();
+            }
+            else
+            {
+                $('.search-main').show();
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,92 +1,20 @@
 ﻿@{
     ViewBag.Title = "Index";
 }
+@using Webdiyer.WebControls.Mvc
+@model PagedList<Club.Models.ListPostModel>
 <div class="col-md-7 pa-0">
     <div class="ux-w-100 uz-h-4 bg-c-white2"></div>
     <div class="ux-w-100 bg-c-white pa-l-15 pa-t-15">
         <div class="inline-flex f-wrap"> <a href="#" class="ma_lt bg-c-blue f-c-white">最新回复</a> <a href="#" class="ma_lt">最新发表</a> <a href="#" class="ma_lt">只看精华</a> </div>
         <div class="ul_s">
-            <!--最新回复-->
-            <ul class="pa-l-15">
-                <li class="ux-w-100 bod-b-1 inline-flex f-wrap f-just-b ma-t-20 ma_list ma_list">
-                    <div>
-                        <a class="left ma-r-15" href="#"><img class="uz-w-40 uz-h-40 bd-r-4" src="/Content/userimages/0.jpg"></a>
-                        <div class="ma-l-15 uz-w-200">
-                            <h5 class="ma-0 ma-t-2">辟谷养生0</h5>
-                            <p class="ma-t-6 f-s-10">海华 5月18日 01:00</p>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="f-c-gray uz-w-40 left">
-                            <i class="iconfont icon-iconview"></i>
-                            <div>118</div>
-                        </div>
-                        <div class="f-c-gray uz-w-40 left">
-                            <i class="iconfont icon-iconview"></i>
-                            <div>5</div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-            <!--最新发表-->
-            <ul class="pa-l-15 none">
-                <li class="ux-w-100 bod-b-1 inline-flex f-wrap f-just-b ma-t-20 ma_list ma_list">
-                    <div>
-                        <a class="left ma-r-15" href="#"><img class="uz-w-40 uz-h-40 bd-r-4" src="/Content/userimages/0.jpg"></a>
-                        <div class="ma-l-15 uz-w-200">
-                            <h5 class="ma-0 ma-t-2">辟谷养生1</h5>
-                            <p class="ma-t-6 f-s-10">海华 5月18日 01:00</p>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="f-c-gray uz-w-40 left">
-                            <i class="iconfont icon-iconview"></i>
-                            <div>118</div>
-                        </div>
-                        <div class="f-c-gray uz-w-40 left">
-                            <i class="iconfont icon-iconview"></i>
-                            <div>5</div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-            <!--只看精华-->
-            <ul class="pa-l-15 none">
-                <li class="ux-w-100 bod-b-1 inline-flex f-wrap f-just-b ma-t-20 ma_list ma_list">
-                    <div>
-                        <a class="left ma-r-15" href="#"><img class="uz-w-40 uz-h-40 bd-r-4" src="/Content/userimages/0.jpg"></a>
-                        <div class="ma-l-15 uz-w-200">
-                            <h5 class="ma-0 ma-t-2">辟谷养生2</h5>
-                            <p class="ma-t-6 f-s-10">海华 5月18日 01:00</p>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="f-c-gray uz-w-40 left">
-                            <i class="iconfont icon-iconview"></i>
-                            <div>118</div>
-                        </div>
-                        <div class="f-c-gray uz-w-40 left">
-                            <i class="iconfont icon-iconview"></i>
-                            <div>5</div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="pa-l-15 ma-t-15 pa-b-45">
-            <ul class="ma_ul flex f-wrap f-just-c">
-                <li><a href="#" class="ma_lb ma_lb_on">1</a></li>
-                <li><a href="#" class="ma_lb">2</a></li>
-                <li><a href="#" class="ma_lb">3</a></li>
-                <li><a href="#" class="ma_lb">4</a></li>
-                <li><a href="#" class="ma_lb">5</a></li>
-                <li><a href="#" class="ma_lb">6</a></li>
-                <li><a href="#" class="ma_lb">7</a></li>
-                <li><a href="#" class="ma_lb">8</a></li>
-                <li><a href="#" class="ma_lb">></a></li>
-                <li><a href="#" class="ma_lb">>></a></li>
-            </ul>
-        </div>
+            @using (Html.BeginForm("Index", "Post", FormMethod.Get))
+            {
+                <div id="articles">
+                    @Html.Partial("_Post", Model)
+                </div>
+            }            
+        </div>        
     </div>
 </div>
 <div class="col-md-4 col-md-offset-1 col-sm-offset-0 bg-c-white pa-l-45 pa-r-45">
@@ -129,4 +57,5 @@
         <li class="ma_bl ma-b-30"><a href="#">阿里云</a></li>
     </ul>
 </div>
-
+<script src="/Conten/js/jquery.unobtrusive-ajax.min.js"></script>
+<script type="text/javascript">$(function () {@{ Ajax.LoadMvcPagerScript(); }});</script>

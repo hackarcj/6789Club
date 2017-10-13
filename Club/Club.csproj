@@ -199,6 +199,7 @@
     <Compile Include="Level.cs">
       <DependentUpon>Club.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PostModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Post.cs">
       <DependentUpon>Club.tt</DependentUpon>
@@ -495,6 +496,7 @@
     <Content Include="Content\js\bootstrap\3.3.4\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\js\bootstrap\3.3.5\js\bootstrap.min.js" />
     <Content Include="Content\js\jquery-3.2.1.slim.min.js" />
+    <Content Include="Content\js\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Content\js\jquery\1.11.3\jquery.min.js" />
     <Content Include="Content\js\jweixin-1.0.0.js" />
     <Content Include="Content\js\vendor\layer\layer.js" />
@@ -766,6 +768,7 @@
     <Content Include="Views\Post\Search.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Post\New.cshtml" />
+    <Content Include="Views\Post\_Post.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

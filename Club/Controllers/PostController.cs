@@ -1,17 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Webdiyer.WebControls.Mvc;
+using Club;
+using Club.Models;
 
 namespace Club.Controllers
 {
     public class PostController : BaseController
-    {
+    {        
         // GET: Post
-        public ActionResult Index()
+        public ActionResult Index(int?id)
         {
-            return View();
+            var pageIndex = id ?? 1;
+            int pageSize = 10;
+            //var kw = Request["kw"];
+            var listpost=new List<ListPostModel>();
+            using (var db = new ClubEntities())
+            {                
+                var post = db.Post.OrderByDescending(a => a.id).Include(a => a.User).Include(a => a.Type).Where(a => a.IsFeatured == true).ToList();                
+                //if (!string.IsNullOrEmpty(kw))
+                //{
+                //    list = list.Where(a => a.Title.Contains(kw) || a.Contents.Contains(kw));
+                //}
+                foreach(var item in post)
+                {
+                    var postModel = new ListPostModel();
+                    var reply = db.Reply.Where(a => a.id == item.id);
+                    postModel.id = item.id;
+                    postModel.title = item.Title;
+                    postModel.username = item.User.Name;
+                    postModel.image = item.User.Image;
+                    postModel.time = item.Time;
+                    postModel.visit = item.Visit;
+                    postModel.relpy = reply.Count();
+                    if(item.Essence==1)
+                    {
+                        postModel.essence = "精";
+                    }
+                    listpost.Add(postModel);
+                }
+                listpost = listpost.ToPagedList(pageIndex: pageIndex, pageSize: pageSize);
+                if (Request.IsAjaxRequest())
+                {
+                    return PartialView("_Post", listpost);
+                }
+            }
+
+            return View(listpost);
         }
         public ActionResult Search()
         {

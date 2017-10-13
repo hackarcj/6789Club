@@ -12,8 +12,7 @@
     <link rel="stylesheet" href="/Content/css/base.css" />
     <link rel="stylesheet" href="/Content/font-awesome/css/font-awesome.css-v=4.3.0.css" />
     <link rel="icon" href="http://bbs.bangke.com/app/views/img/favicon.ico" mce_href="/app/views/img/favicon.ico" type="image/x-icon">
-    <script src="/Content/js/jquery/1.11.3/jquery.min.js"></script> 
-    @*<script src="/Content/js/jquery-3.2.1.slim.min.js" language="javascript" type="text/javascript"></script>*@
+    <script src="/Content/js/jquery/1.11.3/jquery.min.js"></script>     
     <script src="/Areas/Admin/Assets/scripts/bootstrap.js"></script>
     <script src="/Areas/Admin/Assets/scripts/dialog.js"></script>
 </head>
@@ -98,7 +97,7 @@
                         <input type="hidden" id="typeId" name="typeId" value="" />
                         <div class="space-15">
                         </div>
-                        <input type="text" id="title" placeholder="请输入标题" maxlength="50" value="" class="form-control">
+                        <input type="text" id="titleinput" placeholder="请输入标题" maxlength="50" value="" class="form-control">
                     </div>
                     <div class="row" style="margin: 0px;">
                         <div id="post-edit"></div>
@@ -142,22 +141,22 @@
             })
             //边框闪烁
             function twinkle() {
-                var title = $('#title').val();
+                var title = $('#titleinput').val();
                 if (title=="")
                 {
-                    setTimeout("$('#title').css('border-color','#cccccc')", 300); //第一次闪烁
-                    setTimeout("$('#title').css('border-color','#fF0000')", 600); //第二次闪烁
+                    setTimeout("$('#titleinput').css('border-color','#cccccc')", 100); //第一次闪烁
+                    setTimeout("$('#titleinput').css('border-color','#fF0000')", 500); //第二次闪烁
                 }
                 else
                 {
-                    setTimeout("$('#title').css('border-color','#cccccc')", 100);
+                    $('#titleinput').css('border-color', '#cccccc');
                 }
             }
             //帖子提交
             $('#post-submit').on('click', function () {
                 var content = editor.txt.html();
                 var typeId = $('#typeId').val();
-                var title = $('#title').val();
+                var title = $('#titleinput').val();
                 if (typeId == "")
                 {
                     $('#type').show();

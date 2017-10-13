@@ -242,6 +242,7 @@
 }
 .bg-c-red {
 	background: #ec4758;
+    border
 }
 .bg-c-blue {
 	background: #4B9DBD;
@@ -251,6 +252,9 @@
 }
 .bg-c-gray {
 	background:#ddd;
+}
+.bg-c-gray2 {
+    background: #ABABAB;
 }
 /*字体颜色*/
 .f-c-white {
@@ -523,6 +527,13 @@
 }
 .bd-r-50 {
 	border-radius:50px;
+}
+/*边框颜色*/
+.bod-c-red{
+    border-color:red;
+}
+.bod-c-white {
+    border-color: #cccccc;
 }
 /*边框*/
 .bod-1{

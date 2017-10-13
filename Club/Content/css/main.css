@@ -1,4 +1,4 @@
-@charset "utf-8";
+﻿@charset "utf-8";
 /* CSS Document */
 body {
 	background-color: #F5F8FA;
@@ -254,4 +254,8 @@ ul li{
 .user_h:hover{
 	color:white;
 	background-color:#449d44;		
+}
+/*发帖类型选择样式*/
+.type:hover{
+    color:white;
 }

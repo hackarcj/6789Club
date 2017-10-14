@@ -156,9 +156,10 @@ ul li{
 .ma_bl a{
 	color:inherit;
 }
-.ma_rm{
-	color:inherit;
-	margin-top:7px;
+.ma_rm {
+    color: inherit;
+    margin-top: 7px;
+    cursor: pointer;
 }
 .ma_rm:hover{
 	color:inherit;

@@ -17,16 +17,32 @@ namespace Club.Controllers
         {
             var pageIndex = id ?? 1;
             int pageSize = 10;
-            //var kw = Request["kw"];
+            //自定义 
+            //      key==1 为搜索
+            //      key==2 为帖子最新发布和回复选择
+            //      key==3 为帖子类型选择
+            var key = Request["key"].ToInt();
+            var value = Request["value"];
             var listpost=new List<ListPostModel>();
             using (var db = new ClubEntities())
-            {                
-                var post = db.Post.OrderByDescending(a => a.id).Include(a => a.User).Include(a => a.Type).Where(a => a.IsFeatured == true).ToList();                
-                //if (!string.IsNullOrEmpty(kw))
-                //{
-                //    list = list.Where(a => a.Title.Contains(kw) || a.Contents.Contains(kw));
-                //}
-                foreach(var item in post)
+            {
+                var type = db.Type.ToList();
+                ViewBag.type = type;
+                var post = db.Post.OrderByDescending(a => a.id).Include(a => a.User).Include(a => a.Type).Where(a => a.IsFeatured == true).ToList();
+                //按帖子类型查找
+                switch(key)
+                {
+                    case 1:
+                        post = post.Where(a => a.Title.Contains(value) || a.User.Name.Contains(value)).ToList();
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        var typeid = value.ToInt();
+                        post = post.Where(a => a.Typeid == typeid).ToList();
+                        break;
+                }                
+                foreach (var item in post)
                 {
                     var postModel = new ListPostModel();
                     var reply = db.Reply.Where(a => a.id == item.id);
@@ -49,7 +65,6 @@ namespace Club.Controllers
                     return PartialView("_Post", listpost);
                 }
             }
-
             return View(listpost);
         }
         public ActionResult Search()

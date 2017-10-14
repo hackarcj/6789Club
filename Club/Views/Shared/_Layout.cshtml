@@ -1,4 +1,4 @@
-﻿@{ 
+﻿@{
     var currentAction = ViewContext.RouteData.Values["action"].ToString().ToLower();
 }
 <!doctype html>
@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/Content/css/base.css" />
     <link rel="stylesheet" href="/Content/font-awesome/css/font-awesome.css-v=4.3.0.css" />
     <link rel="icon" href="http://bbs.bangke.com/app/views/img/favicon.ico" mce_href="/app/views/img/favicon.ico" type="image/x-icon">
-    <script src="/Content/js/jquery/1.11.3/jquery.min.js"></script> 
+    <script src="/Content/js/jquery/1.11.3/jquery.min.js"></script>
     @*<script src="/Content/js/jquery-3.2.1.slim.min.js" language="javascript" type="text/javascript"></script>*@
     <script src="/Areas/Admin/Assets/scripts/bootstrap.js"></script>
     <script src="/Areas/Admin/Assets/scripts/dialog.js"></script>
@@ -22,9 +22,9 @@
             <!--header-->
             <div class="uz-h-55 pa-t-15">
                 <div class="ma-l-30">
-                    <a href="#" class="culb">6789Club</a>
+                    <a href="/Post/Index" class="culb">6789Club</a>
                     <div class="left ma-l-15  search-main">
-                        <input type="text" class="search" placeholder="请输入您需要查找的内容 …" />
+                        <input id="keyword" type="text" class="search" placeholder="请输入您需要查找的内容 …" />
                     </div>
                 </div>
                 @{
@@ -85,48 +85,63 @@
         </div>
     </div>
     <script type="text/javascript">
-        $(document).ready(function () {      
-            $('.ma_lt').click(
-                function () {
-                    var _s = $(this).index();
-                    $(".ul_s ul").eq(_s).show().siblings().hide();
-                    $(this).addClass('bg-c-blue f-c-white').siblings().removeClass('bg-c-blue f-c-white');
-                })
-            $('.ma_rm').click(
-                function () {
-                    $(this).addClass('ma_rm_on').siblings().removeClass('ma_rm_on');
-                })
-            $('.ma_rmb').click(
-                function () {
-                    $(this).addClass('ma_rmb_on').siblings().removeClass('ma_rmb_on');
-                })
-
+        $(document).ready(function () {
             //弹出框
-            if ('@TempData["Msg"]' != '')
-                {
-                                var d = dialog({
-                                title: '欢迎',
-                                content: '@TempData["Msg"]',
-                                width:300
-                                });
-                                d.show();
+            if ('@TempData["Msg"]' != '') {
+                var d = dialog({
+                    title: '欢迎',
+                    content: '@TempData["Msg"]',
+                    width: 300
+                });
+                d.show();
             }
             //用户注册界面进行新密码验证
             $("#error").hide();
             $("#againPassword").bind("input propertychange", function () {
                 var Password = $("#Password").val();
                 var againPassword = $("#againPassword").val();
-                if (Password != againPassword)
-                {
+                if (Password != againPassword) {
                     $("#error").show();
                 }
-                else
-                {
+                else {
                     $("#error").hide();
                 }
-            })
-
+            });
+            //type分页样式变换
+            $('.ma_lt').click(function () {
+                    var _s = $(this).index();
+                    $(".ul_s ul").eq(_s).show().siblings().hide();
+                    $(this).addClass('bg-c-blue f-c-white').siblings().removeClass('bg-c-blue f-c-white');
+                });
+            $('.ma_rm').click(function () {
+                    $(this).addClass('ma_rm_on').siblings().removeClass('ma_rm_on');
+                });
+            $('.ma_rmb').click(function () {
+                    $(this).addClass('ma_rmb_on').siblings().removeClass('ma_rmb_on');
+            });
+            //搜索
+            $("#keyword").bind("input propertychange", function () { //监听input输入框内容
+                var keyword = $(this).val();
+                search(1, keyword);
+            });                        
+            //帖子类型
+            $('.ma_rm').click(function () {
+                var typeid = $(this).attr('name');
+                search(3,typeid);
+            });
         })
+        //ajax提交
+        function search(key,value) {
+            $.ajax({
+                type: "get",
+                url: "/Post/Index",
+                async: true,
+                data: "key=" + key + "&value=" + value,
+                success: function (response) {
+                    $('#articles').html(response);
+                }
+            });
+        }
         //根据浏览器宽度自适应
         window.onresize = function () {
             var width = $(window).width();

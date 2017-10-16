@@ -13,7 +13,7 @@ namespace Club.Controllers
         public ActionResult Index()
         {
 
-            using (var club = new ClubEntities())
+            using (var club = new ClubEntitie())
             {
                 //添加
                 //var level = new Level();
@@ -47,7 +47,7 @@ namespace Club.Controllers
 
         public ActionResult About()
         {
-            //using (var club=new ClubEntities())
+            //using (var club=new ClubEntitie())
             //{
             //    string psw = "000000";
             //    var user = club.User.ToList();

@@ -11,7 +11,7 @@ namespace Club.Controllers
         // GET: Login
         public ActionResult Index()
         {
-            //using (var db = new ClubEntities())
+            //using (var db = new ClubEntitie())
             //{
             //    var user = db.User.ToList();
             //    foreach (var item in user)
@@ -35,7 +35,7 @@ namespace Club.Controllers
                 TempData["login"] = "用户名或密码不能为空";
                 return RedirectToAction("Login");
             }
-            using (var club = new ClubEntities())
+            using (var club = new ClubEntitie())
             {
                 UserLogin.Password = UserLogin.Password.MD5Encoding(UserLogin.Account);
                 var user = club.User.FirstOrDefault(a => a.Account == UserLogin.Account);
@@ -63,7 +63,7 @@ namespace Club.Controllers
         [HttpPost]
         public ActionResult Register(UserRegister UserRegister)
         {
-            using (var db=new ClubEntities())
+            using (var db=new ClubEntitie())
             {
                 var user = db.User.ToList();
                 foreach(var item in user)

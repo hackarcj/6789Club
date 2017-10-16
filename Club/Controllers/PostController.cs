@@ -24,7 +24,7 @@ namespace Club.Controllers
             var key = Request["key"].ToInt();
             var value = Request["value"];
             var listpost=new List<ListPostModel>();
-            using (var db = new ClubEntities())
+            using (var db = new ClubEntitie())
             {
                 var type = db.Type.ToList();
                 ViewBag.type = type;
@@ -74,7 +74,7 @@ namespace Club.Controllers
         [UserCheck(IsNeed = true)]
         public ActionResult New()
         {
-            using (var db=new ClubEntities())
+            using (var db=new ClubEntitie())
             {
                 var type = db.Type.ToList();
                 ViewBag.type = type;
@@ -90,7 +90,7 @@ namespace Club.Controllers
             var title = Request["title"];
             var content = Request["content"];
             var loginUser = (User)Session["loginuser"];
-            using (var db=new ClubEntities())
+            using (var db=new ClubEntitie())
             {
                 var post = new Post();
                 post.Title = title;

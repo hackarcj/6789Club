@@ -25,7 +25,7 @@ namespace Club.Areas.Admin.Controllers
                 TempData["login"] = "用户名或密码不能为空";
                 return RedirectToAction("Index");
             }
-            using (var club = new ClubEntities())
+            using (var club = new ClubEntitie())
             {
                 psw = psw.MD5Encoding(account);
                 var user = club.User.FirstOrDefault(a => a.Account == account);

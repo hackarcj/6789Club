@@ -19,7 +19,7 @@ namespace Club.Areas.Admin.Controllers
             int pageSize = 4;
             var kw = Request["kw"];           
             PagedList<User> pageList;            
-            using (var club = new ClubEntities())
+            using (var club = new ClubEntitie())
             {
                 var list = club.User.Where(a => a.IsAbort == false).OrderByDescending(a => a.id).Include(a => a.Level);
                 if(!string.IsNullOrEmpty(kw))
@@ -41,7 +41,7 @@ namespace Club.Areas.Admin.Controllers
         {                        
             int userid = id ?? 0;            
             var user = new User();            
-            using (var club = new ClubEntities())
+            using (var club = new ClubEntitie())
             {
                 if(userid!=0)
                 {
@@ -75,7 +75,7 @@ namespace Club.Areas.Admin.Controllers
             var levleid = int.Parse(Request["levelid"]);
             var gold = int.Parse(Request["gold"]);
             var image = Request["image"];                        
-            using (var club=new ClubEntities())
+            using (var club=new ClubEntitie())
             {
                 var user = new User();
                 if (id == 0)
@@ -109,7 +109,7 @@ namespace Club.Areas.Admin.Controllers
             var massage = "删除失败";
             if (userid!=0)
             {
-                using (var club = new ClubEntities())
+                using (var club = new ClubEntitie())
                 {
                     var user = club.User.FirstOrDefault(a => a.id == userid);
                     if (user != null)
@@ -140,7 +140,7 @@ namespace Club.Areas.Admin.Controllers
             int pageSize = 4;
             PagedList<Level> pageList;
             var user = new List<Level>();
-            using (var club = new ClubEntities())
+            using (var club = new ClubEntitie())
             {
                 pageList = club.Level.OrderByDescending(a => a.id).ToPagedList(pageIndex: pageIndex, pageSize: pageSize);
                 if (Request.IsAjaxRequest())
@@ -159,7 +159,7 @@ namespace Club.Areas.Admin.Controllers
             var level = new Level();
             if(levelid!=0)
             {
-                using (var club=new ClubEntities())
+                using (var club=new ClubEntitie())
                 {
                     level = club.Level.FirstOrDefault(a => a.id == levelid);
                 }
@@ -174,7 +174,7 @@ namespace Club.Areas.Admin.Controllers
             int levelid = int.Parse(Request["id"]);
             var name = Request["name"];
             var level = new Level();
-            using (var club=new ClubEntities())
+            using (var club=new ClubEntitie())
             {
                 if (levelid == 0)
                 {
@@ -199,7 +199,7 @@ namespace Club.Areas.Admin.Controllers
             var massage = "删除失败";
             if(levelid != 0)
             {
-                using (var club=new ClubEntities())
+                using (var club=new ClubEntitie())
                 {
                     var level = club.Level.FirstOrDefault(a=>a.id==levelid);
                     if(level!=null)
@@ -225,7 +225,7 @@ namespace Club.Areas.Admin.Controllers
             int pageSize = 4;
             var kw = Request["kw"];
             PagedList<Collection> pageList;
-            using (var club = new ClubEntities())
+            using (var club = new ClubEntitie())
             {
                 var list = club.Collection.Where(a => a.IsCollection == true).OrderByDescending(a => a.id).Include(a => a.User).Include(a=>a.Post);
                 if (!string.IsNullOrEmpty(kw))
@@ -248,7 +248,7 @@ namespace Club.Areas.Admin.Controllers
             int pageSize = 4;
             var kw = Request["kw"];
             PagedList<PraiseRecord> pageList;
-            using (var club = new ClubEntities())
+            using (var club = new ClubEntitie())
             {
                 var list = club.PraiseRecord.OrderByDescending(a => a.id).Include(a => a.User).Include(a => a.Post);
                 if (!string.IsNullOrEmpty(kw))

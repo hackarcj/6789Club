@@ -13,10 +13,10 @@ namespace Club
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ClubEntities : DbContext
+    public partial class ClubEntitie : DbContext
     {
-        public ClubEntities()
-            : base("name=ClubEntities")
+        public ClubEntitie()
+            : base("name=ClubEntitie")
         {
         }
     

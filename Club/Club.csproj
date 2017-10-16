@@ -489,6 +489,8 @@
     <Content Include="Content\img\favicon.ico" />
     <Content Include="Content\img\logo.png" />
     <Content Include="Content\img\pbg.jpg" />
+    <Content Include="Content\img\pic_01.gif" />
+    <Content Include="Content\img\pic_02.gif" />
     <Content Include="Content\img\浼氬憳.png" />
     <Content Include="Content\img\甯栧瓙.png" />
     <Content Include="Content\img\绮惧崕.png" />
@@ -736,13 +738,6 @@
     <Content Include="Areas\Admin\Views\User\Information.cshtml" />
     <Content Include="Areas\Admin\Views\User\LevelInformation.cshtml" />
     <Content Include="Areas\Admin\Views\Post\_Post.cshtml" />
-    <EntityDeploy Include="Club.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Club.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Club.edmx.diagram">
-      <DependentUpon>Club.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\Admin\Views\Post\Information.cshtml" />
     <Content Include="Areas\Admin\Views\Post\_Type.cshtml" />
     <Content Include="Areas\Admin\Views\Post\TypeInformation.cshtml" />
@@ -761,6 +756,13 @@
     <Content Include="Content\js\bootstrap\3.3.4\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\wangEditor\fonts\w-e-icon.woff" />
     <Content Include="Content\wangEditor\wangEditor.min.js.map" />
+    <EntityDeploy Include="Club.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Club.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Club.edmx.diagram">
+      <DependentUpon>Club.edmx</DependentUpon>
+    </Content>
     <None Include="packages.config" />
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\User\Register.cshtml" />

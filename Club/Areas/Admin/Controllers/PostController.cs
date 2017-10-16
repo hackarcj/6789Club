@@ -19,7 +19,7 @@ namespace Club.Areas.Admin.Controllers
             int pageSize = 4;
             var kw = Request["kw"];
             PagedList<Post> pageList;
-            using (var club = new ClubEntities())
+            using (var club = new ClubEntitie())
             {
                 var list = club.Post.OrderByDescending(a => a.id).Include(a => a.User).Include(a => a.Type).Where(a=>a.IsAbout==false);                
                 if (!string.IsNullOrEmpty(kw))
@@ -40,7 +40,7 @@ namespace Club.Areas.Admin.Controllers
         {
             var postid = id ?? 0;
             var post = new Post();
-            using (var club = new ClubEntities())
+            using (var club = new ClubEntitie())
             {
                 post = club.Post.Include(a => a.Type).Include(a => a.User).FirstOrDefault(a => a.id == postid);
                 var selectlisttype = new List<SelectListItem>();
@@ -82,7 +82,7 @@ namespace Club.Areas.Admin.Controllers
             var id = Request["id"].ToInt();
             int isfeaturedid = Request["isfeaturedid"].ToInt();
             int typeid = Request["typeid"].ToInt();
-            using (var club = new ClubEntities())
+            using (var club = new ClubEntitie())
             {
                 var post = club.Post.FirstOrDefault(a => a.id == id);
                 post.Typeid = typeid;
@@ -98,7 +98,7 @@ namespace Club.Areas.Admin.Controllers
             var massage = "删除失败";
             if(postid!=0)
             {
-                using (var club = new ClubEntities())
+                using (var club = new ClubEntitie())
                 {
                     var post = club.Post.FirstOrDefault(a => a.id == postid);
                     post.IsAbout = true;
@@ -115,7 +115,7 @@ namespace Club.Areas.Admin.Controllers
             int pageIndex = id ?? 1;
             int pageSize = 4;
             PagedList<Type> pageList;            
-            using (var club = new ClubEntities())
+            using (var club = new ClubEntitie())
             {                
                 pageList = club.Type.OrderByDescending(a => a.id).ToPagedList(pageIndex: pageIndex, pageSize: pageSize);
                 if (Request.IsAjaxRequest())
@@ -131,7 +131,7 @@ namespace Club.Areas.Admin.Controllers
         {
             var typeid = id ?? 0;
             var type = new Type();
-            using (var club=new ClubEntities())
+            using (var club=new ClubEntitie())
             {
                 if(typeid!=0)
                 {
@@ -147,7 +147,7 @@ namespace Club.Areas.Admin.Controllers
             var name = Request["name"];
             var type = new Type();
             var massage = "";
-            using (var club = new ClubEntities())
+            using (var club = new ClubEntitie())
             {
                 if(typeid==0)
                 {                    
@@ -168,7 +168,7 @@ namespace Club.Areas.Admin.Controllers
         public ActionResult TypeEdit(int id)
         {
             var typeid = id;
-            using (var club = new ClubEntities())
+            using (var club = new ClubEntitie())
             {
                 var type = club.Type.FirstOrDefault(a => a.id == typeid);
                 if (type != null)

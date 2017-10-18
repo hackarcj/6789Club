@@ -261,3 +261,17 @@ ul li{
 .type:hover{
     color:white;
 }
+/*帖子点赞样式*/
+.praise {
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #676a6c;
+    cursor: pointer;
+    border: 1px solid #EBEBEB;
+}
+    .praise:hover {
+        color: #676a6c;
+        border: 1px solid #CDC9C9;
+    }

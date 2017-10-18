@@ -207,7 +207,7 @@
 	width: 93%;
 }
 .ux-w-94 {
-	width: 90%;
+	width: 94%;
 }
 .ux-w-95 {
 	width: 95%;
@@ -408,6 +408,10 @@
 .pa-r-45 {
 	padding-right: 45px;
 }
+/*内边距百分比*/
+.pax-l-2{
+    padding-left:2%;
+}
 /*外边距*/
 .ma-0{
 	margin: 0px;
@@ -519,6 +523,9 @@
 .bd-r-13 {
 	border-radius:13px;
 }
+.bd-r-15 {
+    border-radius: 15px;
+}
 .bd-r-20 {
 	border-radius:20px;
 }
@@ -538,6 +545,9 @@
 /*边框*/
 .bod-1{
 	border:1px solid transparent;
+}
+.bod-1-CDC9C9{
+    border: 1px solid #CDC9C9;
 }
 .bod-1-white{
 	border:3px solid white;

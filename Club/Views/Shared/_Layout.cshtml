@@ -39,27 +39,10 @@
                             <a href="/Notice" class="ma-r-4">
                                 <img alt="image" src="/Content/img/pic_01.gif" width="26" height="26" />
                             </a>
-                            <a href="#" onclick="p.utk(''); layer.msg('退成成功',function(){reload()});">
+                            <a href="/User/Introduction">
                                 <img src="/Content/img/pic_02.gif" width="26" height="26" />
                             </a>
                         </div>
-                        @*<ul class="uz-w-180 right ma-r-15">
-                            <li>
-                                <a href="/User" title="@user.Name" style="padding: 15px 5px; line-height: 30px;" class=" f-c-gray">
-                                    <img alt="image" id="my-avatar" class="img-circle profile-small-avatar uz-h-26 uz-w-26" src="@user.Image">
-                                    <span class="mobile-hide">@user.Name</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-toggle" href="/Notice"><i class="fa fa-bell-o header-ico"></i></a>
-                            </li>
-                            <li>
-                                <a>
-                                    <i class="fa fa-sign-out header-ico" onclick="p.utk(''); layer.msg('退成成功',function(){reload()});">
-                                    </i>
-                                </a>
-                            </li>
-                        </ul>*@
                     }
                     else
                     {
@@ -131,11 +114,17 @@
             $('.ma_rmb').click(function () {
                     $(this).addClass('ma_rmb_on').siblings().removeClass('ma_rmb_on');
             });
+            //浏览帖子内容
+            $('.browse').click(function () {
+                var postid = $(this).attr('data-cid');
+                var url = "/Post/Browse?postid=" + postid;
+                window.location.href = url;
+            });
             //搜索
             $("#keyword").bind("input propertychange", function () { //监听input输入框内容
                 var keyword = $(this).val();
                 search(1, keyword);
-            });                        
+            });
             //帖子类型
             $('.ma_rm').click(function () {
                 var typeid = $(this).attr('name');

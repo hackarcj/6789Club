@@ -23,7 +23,7 @@
         <div class="ux-w-40"><a href="#" class="ma_rt ma_rt bg-c-green f-c-white">投稿</a></div>
     </div>
     <div class="ux-w-100 ma-t-20">
-        <a class="ma_rt ma_rm ma_rm_on">全部</a>
+        <a class="ma_rt ma_rm ma_rm_on" name="0">全部</a>
         @{
             var type = ViewBag.type;
             foreach (var item in type)
@@ -31,10 +31,6 @@
                 <a class="ma_rt ma_rm" name="@item.id">@item.Name</a>
             }
         }
-        @*<a href="#" class="ma_rt ma_rm">亲子帮</a> 
-        <a href="#" class="ma_rt ma_rm">摄影帮</a> 
-        <a href="#" class="ma_rt ma_rm">龙城茶座</a> 
-        <a href="#" class="ma_rt ma_rm">站务管理</a>*@
     </div>
     <div class="ux-w-100 pa-t-230">
         <div class="f-s-12 f-c-ccc"># 本站统计</div>

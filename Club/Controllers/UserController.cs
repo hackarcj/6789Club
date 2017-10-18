@@ -4,24 +4,39 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Club.Models;
+using System.Data.Entity;
+
 namespace Club.Controllers
 {
     public class UserController : BaseController
     {
+        /// <summary>
+        /// 用户页面
+        /// </summary>
+        /// <returns></returns>
         // GET: Login
         public ActionResult Index()
         {
-            //using (var db = new ClubEntitie())
-            //{
-            //    var user = db.User.ToList();
-            //    foreach (var item in user)
-            //    {
-            //        item.RegistrationTime = DateTime.Now.AddDays(-2);
-            //    }
-            //    db.SaveChanges();
-            //}
+            var userid = Request["userid"] ?? "";
+            int id = userid.ToInt();
+            if(id!=0)
+            {
+                using (var db=new ClubEntitie())
+                {
+                    var user = db.User.OrderByDescending(a => a.id).Include(a => a.Level).FirstOrDefault(a => a.id == id);
+                    Session["browseuser"] = user;
+                }
+            }
             return View();
         }
+        public ActionResult Dynamic()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 用户登录
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult Login()
         {
@@ -38,7 +53,7 @@ namespace Club.Controllers
             using (var club = new ClubEntitie())
             {
                 UserLogin.Password = UserLogin.Password.MD5Encoding(UserLogin.Account);
-                var user = club.User.FirstOrDefault(a => a.Account == UserLogin.Account);
+                var user = club.User.OrderByDescending(a => a.id).Include(a =>a.Level).FirstOrDefault(a => a.Account == UserLogin.Account);
                 if (user == null)
                 {
                     TempData["login"] = "用户名不存在";
@@ -55,6 +70,10 @@ namespace Club.Controllers
             }
             return Redirect("/Post");
         }
+        /// <summary>
+        /// 用户注册
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult Register()
         {
@@ -85,6 +104,15 @@ namespace Club.Controllers
                 ShowMassage("注册成功，请登录");
             }
             return View();
+        }
+        /// <summary>
+        /// 用户退出
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Introduction()
+        {
+            Session["loginuser"] = null;
+            return Redirect("/Post");
         }
     }
 }

@@ -3,19 +3,25 @@
 }
 @using Webdiyer.WebControls.Mvc
 @model PagedList<Club.Models.ListPostModel>
-@{
-    foreach (var item in Model)
-    {
-        <ul class="pa-l-15">
-            <li class="ux-w-100 bod-b-1 inline-flex f-wrap f-just-b ma-t-20 ma_list ma_list">
+<ul class="pa-l-15">
+    @{
+        foreach (var item in Model)
+        {
+            string time = item.time.ToString();                        
+            string year = time.Substring(2,2)+"年";
+            string month = time.Substring(5,2)+"月";
+            string day = time.Substring(8, 2)+"日";
+            string hour= time.Substring(11,5);
+            <li class="ux-w-100 bod-b-1 inline-flex f-wrap f-just-b ma-t-20 ma_list ma_list" style="cursor: pointer;">
                 <div class="ux-w-80">
-                    <a class="left ma-r-15" href="#"><img class="uz-w-40 uz-h-40 bd-r-4" src="/Content/userimages/0.jpg"></a>
-                    <div class="ma-l-15 ux-w-100">
+                    <a class="left ma-r-15" href="/User/Index?userid=@item.userid"><img class="uz-w-40 uz-h-40 bd-r-4" src="@item.image"></a>
+                    <div class="ma-l-15 ux-w-100 browse" data-cid="@item.id">
                         <h5 class="ma-0 ma-t-2">@item.title</h5>
-                        <p class="ma-t-6 f-s-10">@item.time</p>
+                        <span class="ma-t-6 f-s-10">@item.username</span>
+                        <span class="ma-t-6 f-s-10">@year@month@day @hour</span>
                     </div>
                 </div>
-                <div>
+                <div class="browse" data-cid="@item.id">
                     <div class="f-c-gray uz-w-40 left">
                         <i class="iconfont icon-iconview"></i>
                         <div>@item.visit</div>
@@ -26,9 +32,9 @@
                     </div>
                 </div>
             </li>
-        </ul>
+        }
     }
-}
+</ul>
 @Ajax.Pager(Model, new PagerOptions
 {
     AutoHide = false,

@@ -200,6 +200,8 @@
       <DependentUpon>Club.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PostModel.cs" />
+    <Compile Include="Models\PraiserecordModel.cs" />
+    <Compile Include="Models\ReplyModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Post.cs">
       <DependentUpon>Club.tt</DependentUpon>
@@ -771,6 +773,10 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Post\New.cshtml" />
     <Content Include="Views\Post\_Post.cshtml" />
+    <Content Include="Views\Post\Browse.cshtml" />
+    <Content Include="Views\Post\_Comment.cshtml" />
+    <Content Include="Views\Post\_PraiseRecord.cshtml" />
+    <Content Include="Views\User\_Dynamic.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

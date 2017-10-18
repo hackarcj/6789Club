@@ -14,6 +14,8 @@ namespace Club.Models
         public int id { get; set; }
         //帖子标题
         public string title { get; set; }
+        //用户ID
+        public int userid { get; set; }
         //发帖用户
         public string username { get; set; }
         //用户头像
@@ -25,6 +27,6 @@ namespace Club.Models
         //回复量
         public int relpy { get; set; }
         //是否是精华贴
-        public string essence { get; set; }        
-    }
+        public string essence { get; set; }           
+    }    
 }

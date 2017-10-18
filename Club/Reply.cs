@@ -16,8 +16,9 @@ namespace Club
     {
         public int id { get; set; }
         public int Postid { get; set; }
-        public Nullable<int> Userid { get; set; }
+        public int Userid { get; set; }
         public string Contents { get; set; }
+        public System.DateTime Recoverytime { get; set; }
     
         public virtual Post Post { get; set; }
         public virtual User User { get; set; }

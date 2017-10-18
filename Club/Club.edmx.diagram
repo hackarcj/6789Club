@@ -5,23 +5,23 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="516f2d209b6c4b6585f6992a1348881f" Name="Diagram1" ZoomLevel="79">
-        <EntityTypeShape EntityType="ClubModel.Collection" Width="1.5" PointX="5.25" PointY="4.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="ClubModel.Level" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ClubModel.Post" Width="1.5" PointX="8.25" PointY="3.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="ClubModel.PraiseRecord" Width="1.5" PointX="10.5" PointY="4.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="ClubModel.Reply" Width="1.5" PointX="10.5" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="ClubModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ClubModel.Type" Width="1.5" PointX="6" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ClubModel.User" Width="1.5" PointX="3" PointY="3.375" IsExpanded="true" />
-        <AssociationConnector Association="ClubModel.FK_Collection_Post" ManuallyRouted="false" />
-        <AssociationConnector Association="ClubModel.FK_Collection_User" ManuallyRouted="false" />
-        <AssociationConnector Association="ClubModel.FK_User_Level" ManuallyRouted="false" />
-        <AssociationConnector Association="ClubModel.FK_Post_Type1" ManuallyRouted="false" />
-        <AssociationConnector Association="ClubModel.FK_Post_User1" ManuallyRouted="false" />
-        <AssociationConnector Association="ClubModel.FK_PraiseRecord_Post" ManuallyRouted="false" />
-        <AssociationConnector Association="ClubModel.FK_Reply_Post" ManuallyRouted="false" />
-        <AssociationConnector Association="ClubModel.FK_PraiseRecord_User" ManuallyRouted="false" />
-        <AssociationConnector Association="ClubModel.FK_Reply_User" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ClubModel.Collection" Width="1.5" PointX="5.25" PointY="4.125" />
+        <EntityTypeShape EntityType="ClubModel.Level" Width="1.5" PointX="0.75" PointY="4.5" />
+        <EntityTypeShape EntityType="ClubModel.Post" Width="1.5" PointX="8.25" PointY="3.25" />
+        <EntityTypeShape EntityType="ClubModel.PraiseRecord" Width="1.5" PointX="10.5" PointY="4.25" />
+        <EntityTypeShape EntityType="ClubModel.Reply" Width="1.5" PointX="10.5" PointY="1.125" />
+        <EntityTypeShape EntityType="ClubModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ClubModel.Type" Width="1.5" PointX="6" PointY="1.5" />
+        <EntityTypeShape EntityType="ClubModel.User" Width="1.5" PointX="3" PointY="3.5" />
+        <AssociationConnector Association="ClubModel.FK_Collection_Post" />
+        <AssociationConnector Association="ClubModel.FK_Collection_User" />
+        <AssociationConnector Association="ClubModel.FK_User_Level" />
+        <AssociationConnector Association="ClubModel.FK_Post_Type1" />
+        <AssociationConnector Association="ClubModel.FK_Post_User1" />
+        <AssociationConnector Association="ClubModel.FK_PraiseRecord_Post" />
+        <AssociationConnector Association="ClubModel.FK_Reply_Post" />
+        <AssociationConnector Association="ClubModel.FK_PraiseRecord_User" />
+        <AssociationConnector Association="ClubModel.FK_Reply_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

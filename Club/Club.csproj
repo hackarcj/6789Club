@@ -538,6 +538,7 @@
     <Content Include="Images\head_10.jpg" />
     <Content Include="Images\head_11.jpg" />
     <Content Include="Images\head_12.jpg" />
+    <Content Include="Views\User\_Comment.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -786,11 +787,10 @@
     <Content Include="Views\Post\New.cshtml" />
     <Content Include="Views\Post\_Post.cshtml" />
     <Content Include="Views\Post\Browse.cshtml" />
-    <Content Include="Views\Post\_Comment.cshtml" />
     <Content Include="Views\Post\_PraiseRecord.cshtml" />
     <Content Include="Views\User\_MyPost.cshtml" />
     <Content Include="Views\User\_MyReply.cshtml" />
-    <Content Include="Views\User\_Comment.cshtml" />
+    <Content Include="Views\Post\_Comment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

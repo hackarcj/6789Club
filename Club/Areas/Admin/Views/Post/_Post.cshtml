@@ -20,7 +20,7 @@
             <th>操作</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="tablesum">
         @{
             foreach (var item in Model)
             {
@@ -31,15 +31,15 @@
                 }
                 <tr>
                     <td class="center">
-                        <label class="position-relative">
-                            <input type="checkbox" class="ace" />
+                        <label id="@item.id" class="position-relative postlable">
+                            <input type="checkbox" class="ace choice"/>
                             <span class="lbl"></span>
                         </label>
                     </td>
                     <td>@item.Title</td>
                     <td>@item.User.Name</td>
                     <td class="hidden-480">@item.Type.Name</td>
-                    <td>@ViewBag.IsFeatured</td>
+                    <td class="isfeatured" name="@ViewBag.IsFeatured">@ViewBag.IsFeatured</td>
                     <td class="hidden-480">@item.Time</td>
                     <td>
                         <div class="hidden-sm hidden-xs action-buttons">
@@ -51,6 +51,16 @@
         }
     </tbody>
 </table>
+<script>
+    //判断表格数量是否需要追加
+    var pagesize = $('#pagesize').val();
+    var trsum = $('.tablesum').children('tr').length;
+    if (trsum < pagesize) {
+        for (var i = trsum; i < pagesize; i++) {
+            $('.tablesum').append("<tr><td><label class=" + "position-relative" + "></label ></td><td></td><td></td><td></td><td></td><td></td><td></td></tr >");
+        }
+    }
+</script>
 @Ajax.Pager(Model, new PagerOptions
 {
     AutoHide = false,

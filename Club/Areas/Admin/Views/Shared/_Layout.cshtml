@@ -119,7 +119,7 @@
             <!-- #section:basics/navbar.dropdown -->
             <div class="navbar-buttons navbar-header pull-right" role="navigation">
                 <ul class="nav ace-nav">
-                    <li class="grey">
+                    @*<li class="grey">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <i class="ace-icon fa fa-tasks"></i>
                             <span class="badge badge-grey">4</span>
@@ -342,38 +342,44 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li>*@
                     <!-- #section:basics/navbar.user_menu -->
                     <li class="light-blue">
-                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                            <img class="nav-user-photo" src="/Areas/Admin/Assets/images/avatars/user.jpg" alt="Jason's Photo" />
-                            <span class="user-info">
-                                <small>你好,</small>
-                                @ViewBag.username
-                            </span>
-                            <i class="ace-icon fa fa-caret-down"></i>
-                        </a>
-                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-                            <li>
-                                <a href="#">
-                                    <i class="ace-icon fa fa-cog"></i>
-                                    设置
+                        @{
+                            var user = (User)Session["adminuser"];
+                            if (Session["adminuser"]!=null)
+                            {
+                                <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                                    <img class="nav-user-photo" src="@user.Image" alt="image" />
+                                    <span class="user-info">
+                                        <small>你好,</small>
+                                        @user.Name
+                                    </span>
+                                    <i class="ace-icon fa fa-caret-down"></i>
                                 </a>
-                            </li>
-                            <li>
-                                <a href="profile.html">
-                                    <i class="ace-icon fa fa-user"></i>
-                                    个人信息
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="login.html">
-                                    <i class="ace-icon fa fa-power-off"></i>
-                                    退出
-                                </a>
-                            </li>
-                        </ul>
+                                <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                                    <li>
+                                        <a href="#">
+                                            <i class="ace-icon fa fa-cog"></i>
+                                            设置
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/User/InformationJump?id=@user.id">
+                                            <i class="ace-icon fa fa-user"></i>
+                                            个人信息
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="/Admin/Login/SignOut">
+                                            <i class="ace-icon fa fa-power-off"></i>
+                                            退出
+                                        </a>
+                                    </li>
+                                </ul>
+                            }
+                        }                                                
                     </li>
                     <!-- /section:basics/navbar.user_menu -->
                 </ul>
@@ -435,11 +441,11 @@
                     <script type="text/javascript">
                         try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
                     </script>
-                    <ul class="breadcrumb">
+                    @*<ul class="breadcrumb">
                         <li> <i class="ace-icon fa fa-home home-icon"></i> <a href="#">首页</a> </li>
                         <li> <a href="#">订单</a> </li>
                         <li class="active">订货单</li>
-                    </ul><!-- /.breadcrumb -->
+                    </ul>*@<!-- /.breadcrumb -->
                 </div>
                 <!-- /section:basics/content.breadcrumbs -->
                 <div id="renderbody">
@@ -519,75 +525,109 @@
                                     $('#post').addClass('active open').siblings().removeClass('active open');
                                     break;
                             }
-                            //弹出框
+                            //弹出框.1(用于页面刷新或跳转的操作)
                             if ('@TempData["Msg"]'!='')
                             {
                                 var d = dialog({
-                                title: '欢迎',
+                                title: '提示',
                                 content: '@TempData["Msg"]',
                                 width:300
                                 });
                                 d.show();
                             }
-                            $(".menuurl").click(function () {
-                                var name = this.prop("name");
-                                var url = "";
-                                switch (name)
-                                {
-                                    case 'postlist':
-                                        url = "Post/Index";
-                                        break;
-                                    case 'posttype':
-                                        url = "Post/Type";
-                                        break;
-                                    case 'userlist':
-                                        url = "User/Index";
-                                        break;
-                                    case 'userlevel':
-                                        url = "User/Level";
-                                        break;
-                                }
-                                menurl(url);
+                            //弹出框.2(用于异步操作)
+                            function Popup(content){
+                                var d = dialog({
+                                title: '提示',
+                                content: content,
+                                width:300
+                                });
+                                d.show();
+                            };
+                            //选择头像
+                            $('.head-img').click(function () {
+                                $(this).addClass('bd-1-gray').siblings().removeClass('bd-1-gray');
+                                var imageurl = $(this).attr('src');
+                                $('#headimg').attr('src', imageurl);
+                                $('#image').attr('value', imageurl);
                             });
-                            function menurl(url) {
+                            //异步审核
+                            $('.toeamine').click(function () {
+                                var postid = $(this).attr('name');
                                 $.ajax({
                                     type: "get",
-                                    url: "/Admin/" + url,
+                                    url: "/Admin/Post/ToExamine",
                                     async: true,
+                                    data: "postid=" + postid,
                                     success: function (response) {
-                                        $('#renderbody').html(response);
+                                        $('#articles').html(response);                                        
                                     }
                                 });
-                            }
-                            //无刷新搜索
-                            $("#keyword").bind("input propertychange",function () { //监听input输入框内容更变
-                                var url = "";
-                                switch ('@ViewBag.Title')
-                                {
-                                    case 'UserIndex':
-                                        url = "User/Index";
-                                        break;
-                                    case 'PostIndex':
-                                        url = "Post/Index";
-                                        break;
-                                    case 'Collection':
-                                        url = "User/Collection";
-                                        break;
-                                    case 'PraiseRecord':
-                                        url = "User/PraiseRecord";
-                                        break;
-                                }
-                                search(url);
                             });
-                            function search(url) {
-                                var userName = $("#keyword").val();
+                            //批量删除
+                            $('#batchdeletion').click(function () {
+                                batch("1");
+                                Popup("批量删除成功");
+                            });
+                            //批量审核
+                            $('#batchaudit').click(function () {
+                                batch("2");
+                                Popup("批量审核成功");
+                            });
+                            //批量操作
+                            function batch(key) {
+                                var str = key;
+                                var i = 0;
+                                $('.postlable').each(function () {
+                                    if ($(this).find('input').prop('checked'))
+                                    {
+                                        i++;
+                                        str += "|" + $(this).attr('id');
+                                    }
+                                });
+                                if (i <= 0) {
+                                    alert("请选择数据");
+                                } else {
+                                    $.ajax({
+                                        type: "get",
+                                        url: "/Admin/Post/BatchOperation",
+                                        async: true,
+                                        data: "str=" + str,
+                                        success: function (response) {
+                                            $('#articles').html(response);                                            
+                                        }
+                                    });
+                                }
+                            };
+                            //对帖子按类型选择分类
+                            $('#typeid').click(function () {
+                                var data = "id=1&type=" + $(this).val();
+                                search(data);
+                            });
+                            //对帖子表按是否审核分类，对用户表按用户角色分类
+                            $('#isselect').change(function () {
+                                var data = "id=1&isselect=" + $(this).val();
+                                search(data);
+                            });
+                            //数据显示的数目
+                            $('#pagesize').change(function () {
+                                var data = "id=1&size=" + $(this).val();
+                                search(data);
+                            });
+                            //无刷新搜索
+                            $("#keyword").bind("input propertychange", function () { //监听input输入框内容更变
+                                var data ="kw="+$("#keyword").val();
+                                search(data);
+                            });
+                            function search(data) {
+                                var url = '@currentController'+"/"+'@currentAction';
                                 $.ajax({
                                     type: "get",
                                     url: "/Admin/" + url,
                                     async: true,
-                                    data: "kw=" + userName,
+                                    data: data,
                                     success: function (response) {
-                                        $('#articles').html(response);
+                                        $('#articles').html(response);                                        
                                     }
                                 });
                             }
@@ -599,11 +639,6 @@
     <script type="text/javascript"> ace.vars['base'] = '..'; </script>
     <script src="/Areas/Admin/Assets/scripts/ace/elements.onpage-help.js"></script>
     <script src="/Areas/Admin/Assets/scripts/ace/ace.onpage-help.js"></script>
-    @*<script src="../docs/assets/js/rainbow.js"></script>
-        <script src="../docs/assets/js/language/generic.js"></script>
-        <script src="../docs/assets/js/language/html.js"></script>
-        <script src="../docs/assets/js/language/css.js"></script>
-        <script src="../docs/assets/js/language/javascript.js"></script>*@
     @MiniProfiler.RenderIncludes()
 </body>
 </html>

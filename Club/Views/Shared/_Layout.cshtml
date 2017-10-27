@@ -32,7 +32,7 @@
                     if (Session["loginuser"] != null)
                     {
                         <div class="uz-w-180 right">
-                            <a href='/User' class="ma-r-4">
+                            <a href='/User/Index' class="ma-r-4">
                                 <img alt="image" src="@user.Image" width="26" height="26" class="bd-r-13" />
                                 <span class="ma-r-15 f-c-gray">@user.Name</span>
                             </a>                            
@@ -47,7 +47,7 @@
                     else
                     {
                         <div class="uz-w-180 right ma-r-15">
-                            <a href='@(currentAction=="login"?"/User/Register":"/User/Login")' class="wx bg-c-blue ma-r-4">@(currentAction == "login" ? "注册" : "登录")</a> <a href="#" class="wx bg-c-green gd">更多精彩</a>
+                            <a href='@(currentAction=="login"?"/User/Register":"/User/Login")' class="wx bg-c-blue ma-r-4">@(currentAction == "login" ? "注册" : "登录")</a> <a id="jc" href="#" class="wx bg-c-green gd">更多精彩</a>
                             <div class="or">or</div>
                         </div>                        
                     }
@@ -102,7 +102,7 @@
                     $("#error").hide();
                 }
             });
-            //type分页样式变换
+            //tab分页样式变换
             $('.ma_lt').click(function () {
                     var _s = $(this).index();
                     $(".ul_s ul").eq(_s).show().siblings().hide();
@@ -125,11 +125,16 @@
                 var keyword = $(this).val();
                 search(1, keyword);
             });
+            //帖子最新发布和回复选择
+            $('.ma_lt').click(function () {
+                var tabid = $(this).attr('name');
+                search(2, tabid);
+            });
             //帖子类型
             $('.ma_rm').click(function () {
                 var typeid = $(this).attr('name');
                 search(3,typeid);
-            });
+            });              
         })
         //ajax提交
         function search(key,value) {
@@ -152,6 +157,7 @@
             else {
                 $("#all").removeClass("ux-w-100");
             }
+            //隐藏搜索框
             if (width <= 550)
             {
                 $('.search-main').hide();

@@ -526,6 +526,18 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\head_01.jpg" />
+    <Content Include="Images\head_02.jpg" />
+    <Content Include="Images\head_03.jpg" />
+    <Content Include="Images\head_04.jpg" />
+    <Content Include="Images\head_05.jpg" />
+    <Content Include="Images\head_06.jpg" />
+    <Content Include="Images\head_07.jpg" />
+    <Content Include="Images\head_08.jpg" />
+    <Content Include="Images\head_09.jpg" />
+    <Content Include="Images\head_10.jpg" />
+    <Content Include="Images\head_11.jpg" />
+    <Content Include="Images\head_12.jpg" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -776,7 +788,9 @@
     <Content Include="Views\Post\Browse.cshtml" />
     <Content Include="Views\Post\_Comment.cshtml" />
     <Content Include="Views\Post\_PraiseRecord.cshtml" />
-    <Content Include="Views\User\_Dynamic.cshtml" />
+    <Content Include="Views\User\_MyPost.cshtml" />
+    <Content Include="Views\User\_MyDynamic.cshtml" />
+    <Content Include="Views\User\_MyReply.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

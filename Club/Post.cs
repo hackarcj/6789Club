@@ -34,6 +34,7 @@ namespace Club
         public string Image { get; set; }
         public bool IsFeatured { get; set; }
         public bool IsAbout { get; set; }
+        public Nullable<System.DateTime> Recoverytime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Collection> Collection { get; set; }

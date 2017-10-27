@@ -5,34 +5,96 @@ using System.Web;
 using System.Web.Mvc;
 using Club.Models;
 using System.Data.Entity;
+using Webdiyer.WebControls.Mvc;
+using Microsoft.Ajax.Utilities;
 
 namespace Club.Controllers
 {
     public class UserController : BaseController
     {
+        static int key = 1;
         /// <summary>
         /// 用户页面
         /// </summary>
         /// <returns></returns>
         // GET: Login
-        public ActionResult Index()
+        [UserCheck(IsNeed = false)]
+        public ActionResult Index(int? id)
         {
-            var userid = Request["userid"] ?? "";
-            int id = userid.ToInt();
-            if(id!=0)
+            int userid = Request["userid"].ToInt();             
+            var user = (User)Session["loginuser"];
+            int requestkey = Request["key"].ToInt();                
+            if (requestkey != 0)
             {
-                using (var db=new ClubEntitie())
+                key = requestkey;
+            }
+            var pageIndex = id ?? 1;
+            int pageSize = 10;
+            PagedList<Post> pageListpost;
+            PagedList<Collection> pageListcollection;
+            PagedList<Reply> pageListreply;
+            using (var db = new ClubEntitie())
+            {                
+                //判断用户访问自己的信息还是访问其他用户的信息
+                if (userid <= 0)
                 {
-                    var user = db.User.OrderByDescending(a => a.id).Include(a => a.Level).FirstOrDefault(a => a.id == id);
-                    Session["browseuser"] = user;
+                    if (user != null)
+                    {
+                        userid = user.id;
+                    }
+                    else
+                    {
+                        ShowMassage("未知错误");
+                        return Redirect("/Post/Index");
+                    }
+                }
+                else
+                {                    
+                    user = db.User.Include(a=>a.Level).FirstOrDefault(a => a.id == userid);
+                }
+                ViewBag.User = user;
+                //帖子数量
+                var post = db.Post.OrderByDescending(a => a.id).Where(a => a.Userid == userid);
+                ViewBag.postnumber = post.Count();
+                switch (key)
+                {
+                    //帖子
+                    case 1:
+                        ViewBag.url = "_MyPost";                        
+                        pageListpost = post.ToPagedList(pageIndex: pageIndex, pageSize: pageSize);
+                        if (Request.IsAjaxRequest())
+                        {
+                            return PartialView("_MyPost", pageListpost);
+                        }
+                        return View(pageListpost);
+                    //回复
+                    case 2:
+                        ViewBag.url = "_MyReply";
+                        var listreply = new List<ReplyModel>();
+                        var reply = db.Reply.OrderByDescending(a => a.id).Include(a=>a.Post).Include(a=>a.User).Where(a => a.Userid == userid).DistinctBy(a=>a.Postid);
+                        pageListreply = reply.ToPagedList(pageIndex: pageIndex, pageSize: pageSize);
+                        if (Request.IsAjaxRequest())
+                        {
+                            return PartialView("_MyReply", pageListreply);
+                        }
+                        break;
+                    //收藏
+                    case 3:
+                        ViewBag.url = "_MyDynamic";
+                        var collection = db.Collection.OrderByDescending(a => a.id).Include(a => a.Post).Where(a => a.Userid == userid);
+                        pageListcollection = collection.ToPagedList(pageIndex: pageIndex, pageSize: pageSize);
+                        if (Request.IsAjaxRequest())
+                        {
+                            return PartialView("_MyDynamic", pageListcollection);
+                        }
+                        break;
+                    //粉丝
+                    case 4:
+                        break;
                 }
             }
             return View();
-        }
-        public ActionResult Dynamic()
-        {
-            return View();
-        }
+        }        
         /// <summary>
         /// 用户登录
         /// </summary>
@@ -47,7 +109,7 @@ namespace Club.Controllers
         {
             if (string.IsNullOrEmpty(UserLogin.Account) || string.IsNullOrEmpty(UserLogin.Password))
             {
-                TempData["login"] = "用户名或密码不能为空";
+                ShowMassage("用户名或密码不能为空");                
                 return RedirectToAction("Login");
             }
             using (var club = new ClubEntitie())
@@ -56,12 +118,12 @@ namespace Club.Controllers
                 var user = club.User.OrderByDescending(a => a.id).Include(a =>a.Level).FirstOrDefault(a => a.Account == UserLogin.Account);
                 if (user == null)
                 {
-                    TempData["login"] = "用户名不存在";
+                    ShowMassage("用户名不存在");
                     return RedirectToAction("Login");
                 }
                 if (user.Password != UserLogin.Password)
                 {
-                    TempData["login"] = "密码错误";
+                    ShowMassage("密码错误");
                     TempData["account"] = UserLogin.Account;
                     return RedirectToAction("Login");
                 }

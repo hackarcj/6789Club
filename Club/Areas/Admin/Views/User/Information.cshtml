@@ -2,7 +2,16 @@
 @{
     ViewBag.Title = "Edit";
 }
-@model User
+@model User   
+    <style type="text/css" media="screen">
+        .head-img {
+            margin: 3px;
+            cursor: pointer;
+        }
+        .bd-1-gray {
+            border: 1px solid #CDC9C9;
+        }
+    </style>
 <div class="page-content">
     <div class="row">
         <div class="col-xs-12">
@@ -11,36 +20,59 @@
                 <b>用户信息</b>
                 <form class="form-horizontal" role="form" action="/Admin/User/Information" method="post">
                     <input id="id" name="id" type="hidden" value="@Model.id"/>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 用户名 </label>
-                        <div class="col-sm-9">
-                            <input type="text" id="name" placeholder="用户名" name="name" class="col-xs-10 col-sm-4" value="@Model.Name" />
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 用户名 </label>
+                            <div class="col-sm-9">
+                                <input type="text" id="name" placeholder="用户名" name="name" class="col-xs-10 col-sm-4" value="@Model.Name" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right" for="form-field-3"> 账号 </label>
-                        <div class="col-sm-9">
-                            <input type="text" id="account" placeholder="账号" name="account" class="col-xs-10 col-sm-4" value="@Model.Account" />
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-3"> 账号 </label>
+                            <div class="col-sm-9">
+                                <input type="text" id="account" placeholder="账号" name="account" class="col-xs-10 col-sm-4" value="@Model.Account" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right" for="form-field-select-1"> 用户级别 </label>
-                        <div class="col-sm-9">
-                            @Html.DropDownList("levelid", new SelectList(ViewBag.SelectItem, "Value", "Text"), new { @class = " col-sm-4" })
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-3"> 更新密码 </label>
+                            <div class="col-sm-9">
+                                <input type="text" id="password" placeholder="密码" name="password" class="col-xs-10 col-sm-4" value="" />
+                            </div>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-select-1"> 用户级别 </label>
+                            <div class="col-sm-9">
+                                @Html.DropDownList("levelid", new SelectList(ViewBag.SelectItem, "Value", "Text"), new { @class = " col-sm-4" })
+                            </div>
+                        </div>
 
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right" for="form-field-4"> 金币 </label>
-                        <div class="col-sm-9">
-                            <input type="text" id="gold" placeholder="金币" name="gold" class="col-xs-10 col-sm-4" value="@Model.Gold" />
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-4"> 金币 </label>
+                            <div class="col-sm-9">
+                                <input type="text" id="gold" placeholder="金币" name="gold" class="col-xs-10 col-sm-4" value="@Model.Gold" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-5"> 头像 </label>
+                            <div class="col-sm-how">
+                                <img id="headimg" src="@Model.Image" width="50" height="50" /> 
+                                <input id="image" name="image" type="hidden" value="@Model.Image" />
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right" for="form-field-5"> 头像 </label>
-                        <div class="col-sm-how">
-                            <input type="text" id="image" placeholder="头像" name="image" class="col-xs-10 col-sm-how" />
-                        </div>
+                    <div class="col-xs-4">
+                        <img src="/Images/head_01.jpg" class="head-img bd-1-gray" width="50" height="50" />
+                        <img src="/Images/head_02.jpg" class="head-img" width="50" height="50" />
+                        <img src="/Images/head_03.jpg" class="head-img" width="50" height="50" />
+                        <img src="/Images/head_04.jpg" class="head-img" width="50" height="50" />
+                        <img src="/Images/head_05.jpg" class="head-img" width="50" height="50" />
+                        <img src="/Images/head_06.jpg" class="head-img" width="50" height="50" />
+                        <img src="/Images/head_07.jpg" class="head-img" width="50" height="50" />
+                        <img src="/Images/head_08.jpg" class="head-img" width="50" height="50" />
+                        <img src="/Images/head_09.jpg" class="head-img" width="50" height="50" />
+                        <img src="/Images/head_10.jpg" class="head-img" width="50" height="50" />
+                        <img src="/Images/head_11.jpg" class="head-img" width="50" height="50" />
+                        <img src="/Images/head_12.jpg" class="head-img" width="50" height="50" />
                     </div>
                     <div class="clearfix form-actions">
                         <div class="col-md-offset-3 col-md-9">

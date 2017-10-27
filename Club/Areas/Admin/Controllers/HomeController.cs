@@ -19,19 +19,6 @@ namespace Club.Areas.Admin.Controllers
             //    return Redirect("/Admin/Login");
             //}
             return View();
-        }
-        //public ActionResult md5()
-        //{
-        //    using (var club=new ClubEntities())
-        //    {
-        //        var user = club.User.ToList();
-        //        foreach(var item in user)
-        //        {
-        //            item.Password = item.Password.MD5Encoding(item.Account);
-        //        }
-        //        club.SaveChanges();
-        //    }
-        //    return View();
-        //}
+        }        
     }
 }

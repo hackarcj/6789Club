@@ -10,21 +10,56 @@ using Club;
 namespace Club.Areas.Admin.Controllers
 {
     public class PostController : BaseController
-    {         
-        // GET: Admin/Post
-        //帖子列表        
-        public ActionResult Index(int? id)
-        {            
-            var pageIndex = id ?? 1;
-            int pageSize = 4;
+    {
+        static int pageSize=5;
+        static int pageIndex = 1;
+        static int isFeatured = 2;
+        static int selectType = 0;
+        /// <summary>
+        /// 帖子列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>                      
+        public ActionResult Index(int? id,int? size,int? isselect,int? type)
+        {                       
+            pageIndex = id ?? pageIndex;
+            pageSize = size ?? pageSize;
+            //该参数用于判断审核分类
+            isFeatured = isselect ?? isFeatured;
+            //该参数用于判断帖子类型
+            selectType = type ?? selectType;
             var kw = Request["kw"];
             PagedList<Post> pageList;
+            var selecttypelist = new List<SelectListItem>();
             using (var club = new ClubEntitie())
             {
+                var typelist = club.Type.ToList();
+                var selectitem = new SelectListItem();
+                selectitem.Text = "全部";
+                selectitem.Value = "0";
+                selectitem.Selected = true;
+                selecttypelist.Add(selectitem);
+                foreach (var item in typelist)
+                {
+                    selectitem = new SelectListItem();
+                    selectitem.Text = item.Name;
+                    selectitem.Value = item.id.ToString();
+                    selecttypelist.Add(selectitem);
+                }
+                ViewBag.type = selecttypelist;
                 var list = club.Post.OrderByDescending(a => a.id).Include(a => a.User).Include(a => a.Type).Where(a=>a.IsAbout==false);                
                 if (!string.IsNullOrEmpty(kw))
                 {
                     list = list.Where(a => a.Title.Contains(kw) || a.Contents.Contains(kw));
+                }
+                if(isFeatured==0 || isFeatured==1)
+                {
+                    bool featuredis = isFeatured.ToBit();
+                    list = list.Where(a => a.IsFeatured== featuredis);
+                }
+                if(selectType>0)
+                {
+                    list = list.Where(a => a.Typeid == selectType);
                 }
                 pageList = list.ToPagedList(pageIndex: pageIndex, pageSize: pageSize);
                 if (Request.IsAjaxRequest())
@@ -32,9 +67,13 @@ namespace Club.Areas.Admin.Controllers
                     return PartialView("_Post", pageList);
                 }
             }
-            
             return View(pageList);
         }
+        /// <summary>
+        /// 帖子编辑
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult Information(int? id)
         {
@@ -76,6 +115,10 @@ namespace Club.Areas.Admin.Controllers
             }
             return View(post);
         }
+        /// <summary>
+        /// 确认编辑帖子
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Information()
         {
@@ -109,23 +152,58 @@ namespace Club.Areas.Admin.Controllers
             ShowMassage(massage);
             return RedirectToAction("Index");
         }
-        //帖子类型
-        public ActionResult Type(int? id)
+        /// <summary>
+        /// 帖子审核
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ToExamine()
         {
-            int pageIndex = id ?? 1;
-            int pageSize = 4;
+            var postid = Request["postid"].ToInt();
+            PagedList<Post> pageList;
+            using (var club=new ClubEntitie())
+            {                
+                 if(postid > 0)
+                {
+                    var post = club.Post.FirstOrDefault(a => a.id == postid);
+                    post.IsFeatured = true;
+                    club.SaveChanges();
+                }
+                if (Request.IsAjaxRequest())
+                {
+                    var list = club.Post.OrderByDescending(a => a.id).Include(a => a.User).Include(a => a.Type).Where(a => a.IsAbout == false);
+                    pageList = list.ToPagedList(pageIndex: pageIndex, pageSize: pageSize);
+                    return PartialView("_Post", pageList);
+                }
+            }
+            return View();
+        }
+
+        /// <summary>
+        /// 帖子类型
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult Type(int? id,int? size)
+        {
+            pageIndex = id ?? pageIndex;
+            pageSize = size ?? pageSize;
             PagedList<Type> pageList;            
             using (var club = new ClubEntitie())
-            {                
-                pageList = club.Type.OrderByDescending(a => a.id).ToPagedList(pageIndex: pageIndex, pageSize: pageSize);
+            {
+                var typelist = club.Type.OrderByDescending(a => a.id);                
+                pageList = typelist.ToPagedList(pageIndex: pageIndex, pageSize: pageSize);
                 if (Request.IsAjaxRequest())
                 {
                     return PartialView("_Type", pageList);
                 }
-            }
-            
+            }            
             return View(pageList);
         }
+        /// <summary>
+        /// 确认编辑帖子类型
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult TypeInformation(int? id)
         {
@@ -133,13 +211,17 @@ namespace Club.Areas.Admin.Controllers
             var type = new Type();
             using (var club=new ClubEntitie())
             {
-                if(typeid!=0)
+                if(typeid>0)
                 {
                     type = club.Type.FirstOrDefault(a => a.id == typeid);
                 }                
             }
             return View(type);
         }
+        /// <summary>
+        /// 帖子类型添加
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult TypeInformation()
         {
@@ -149,15 +231,15 @@ namespace Club.Areas.Admin.Controllers
             var massage = "";
             using (var club = new ClubEntitie())
             {
-                if(typeid==0)
-                {                    
-                    club.Type.Add(type);
-                    massage = "添加成功";
-                }
-                else
+                if(typeid>0)
                 {
                     type = club.Type.FirstOrDefault(a => a.id == typeid);
                     massage = "更新成功";
+                }
+                else
+                {
+                    club.Type.Add(type);
+                    massage = "添加成功";                    
                 }
                 type.Name = name;
                 club.SaveChanges();
@@ -165,23 +247,71 @@ namespace Club.Areas.Admin.Controllers
             ShowMassage(massage);
             return RedirectToAction("Type");
         }
+        /// <summary>
+        /// 帖子类型删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult TypeEdit(int id)
         {
             var typeid = id;
+            var massage = "该类型删除失败！";
             using (var club = new ClubEntitie())
             {
                 var type = club.Type.FirstOrDefault(a => a.id == typeid);
                 if (type != null)
                 {
-                    club.Type.Remove(type);
+                    type.IsAbout = true;
                     club.SaveChanges();
-                }
-                else
-                {
-                    ShowMassage("该类型删除失败！");
+                    massage="删除成功";
                 }
             }
+            ShowMassage(massage);
             return RedirectToAction("Type");
+        }
+        /// <summary>
+        /// 批量审批、删除操作
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult BatchOperation()
+        {
+            var str = Request["str"];
+            //判断str是否为空
+            if(!string.IsNullOrWhiteSpace(str))
+            {
+                //将str拆分成字符数组
+                string[] split = str.Split(new char[] { '|' });
+                PagedList<Post> pageList;
+                using (var club = new ClubEntitie())
+                {
+                    for (int i = 0; i < split.Length; i++)
+                    {
+                        int postid = split[i].ToInt();
+                        var post = club.Post.FirstOrDefault(a => a.id == postid);
+                        if (post != null)
+                        {
+                            //split[0]为1，则为批量删除操作;
+                            //split[0]为2，则为批量审核操作;
+                            if (split[0] == "1")
+                            {
+                                post.IsAbout = true;
+                            }                            
+                            else if(split[0] == "2")
+                            {
+                                post.IsFeatured = true;
+                            }
+                            club.SaveChanges();
+                        }
+                    }
+                    if (Request.IsAjaxRequest())
+                    {
+                        var list = club.Post.OrderByDescending(a => a.id).Include(a => a.User).Include(a => a.Type).Where(a => a.IsAbout == false);
+                        pageList = list.ToPagedList(pageIndex: pageIndex, pageSize: pageSize);
+                        return PartialView("_Post", pageList);
+                    }
+                }                
+            }
+            return View();
         }
     }
 }

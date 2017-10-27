@@ -11,12 +11,21 @@ namespace Club.Areas.Admin.Controllers
 {
     public class UserController : BaseController
     {
-        // GET: Admin/User
-        //用户列表
-        public ActionResult Index(int? id)
+        static int pageSize=5;
+        static int pageIndex = 1;
+        static int levelid = 0;
+        /// <summary>
+        /// 用户列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        public ActionResult Index(int? id,int? size,int? isselect)
         {
-            var pageIndex = id ?? 1;
-            int pageSize = 4;
+            pageIndex = id ?? pageIndex;
+            pageSize = size ?? pageSize;
+            //该参数用于判断用户角色
+            levelid = isselect ?? levelid;
             var kw = Request["kw"];           
             PagedList<User> pageList;            
             using (var club = new ClubEntitie())
@@ -25,6 +34,10 @@ namespace Club.Areas.Admin.Controllers
                 if(!string.IsNullOrEmpty(kw))
                 {
                     list = list.Where(a => a.Account.Contains(kw) || a.Name.Contains(kw));
+                }
+                if(levelid>0)
+                {
+                    list = list.Where(a => a.Levelid==levelid);
                 }
                 pageList = list.ToPagedList(pageIndex: pageIndex, pageSize:pageSize);
                 if (Request.IsAjaxRequest())
@@ -35,7 +48,11 @@ namespace Club.Areas.Admin.Controllers
             
             return View(pageList);            
         }
-        //用户信息修改与增加
+        /// <summary>
+        /// 用户信息修改与增加
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult Information(int? id)
         {                        
@@ -74,23 +91,27 @@ namespace Club.Areas.Admin.Controllers
             var name = Request["name"];            
             var levleid = int.Parse(Request["levelid"]);
             var gold = int.Parse(Request["gold"]);
-            var image = Request["image"];                        
+            var image = Request["image"];
+            var password = Request["password"];
             using (var club=new ClubEntitie())
             {
                 var user = new User();
                 if (id == 0)
                 {
-                    string pw = "000000";
-                    user.Account = Request["account"];
-                    user.Password = pw.MD5Encoding(user.Account);
+                    user.Account = Request["account"];                   
                     club.User.Add(user);
                     message = "新增成功";
                 }
                 else
                 {
                     id = int.Parse(Request["id"]);
-                    user = club.User.FirstOrDefault(a => a.id == id);
+                    user = club.User.FirstOrDefault(a => a.id == id);                    
                     message = "更新成功";
+                }
+                //判断密码是否更新
+                if (!string.IsNullOrEmpty(password))
+                {
+                    user.Password = password.MD5Encoding(user.Account);
                 }
                 user.Name = name;
                 user.Levelid = levleid;
@@ -102,12 +123,16 @@ namespace Club.Areas.Admin.Controllers
             
             return RedirectToAction("Index");
         }
-        //用户删除
-        public ActionResult Delete()
+        /// <summary>
+        /// 用户删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult Delete(int id)
         {
             int userid = Request["id"].ToInt();
             var massage = "删除失败";
-            if (userid!=0)
+            if (userid>0)
             {
                 using (var club = new ClubEntitie())
                 {
@@ -128,12 +153,15 @@ namespace Club.Areas.Admin.Controllers
             {
                 massage = "数据格式错误";
             }
-            ShowMassage(massage);
-            //return RedirectToAction("Index");
+            ShowMassage(massage);            
             
-            return Content("<script>location='/Admin/User';</script>");
+            return RedirectToAction("Index");
         }
-        //用户级别
+        /// <summary>
+        /// 用户级别
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult Level(int? id)
         {
             var pageIndex = id ?? 1;
@@ -147,11 +175,14 @@ namespace Club.Areas.Admin.Controllers
                 {
                     return PartialView("_Level", pageList);
                 }
-            }
-            
+            }            
             return View(pageList);
         }
-        //用户级别修改与增加
+        /// <summary>
+        /// 用户级别修改与增加
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult LevelInformation(int? id)
         {
@@ -163,10 +194,13 @@ namespace Club.Areas.Admin.Controllers
                 {
                     level = club.Level.FirstOrDefault(a => a.id == levelid);
                 }
-            }
-            
+            }            
             return View(level);
         }
+        /// <summary>
+        /// 用户级别新增和更新
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult LevelInformation()
         {
@@ -193,11 +227,15 @@ namespace Club.Areas.Admin.Controllers
             
             return RedirectToAction("Level");
         }
+        /// <summary>
+        /// 用户级别删除
+        /// </summary>
+        /// <returns></returns>
         public ActionResult LevelEdit()
         {
             int levelid = Request["id"].ToInt();
             var massage = "删除失败";
-            if(levelid != 0)
+            if(levelid > 0)
             {
                 using (var club=new ClubEntitie())
                 {
@@ -218,7 +256,11 @@ namespace Club.Areas.Admin.Controllers
             
             return RedirectToAction("Level");
         }
-        //帖子收藏管理
+        /// <summary>
+        /// 帖子收藏管理
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult Collection(int? id)
         {
             var pageIndex = id ?? 1;
@@ -241,7 +283,11 @@ namespace Club.Areas.Admin.Controllers
             
             return View(pageList);
         }
-        //赞贴管理
+        /// <summary>
+        /// 赞贴管理
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult PraiseRecord(int? id)
         {
             var pageIndex = id ?? 1;
@@ -263,6 +309,25 @@ namespace Club.Areas.Admin.Controllers
             }
             
             return View(pageList);
+        }
+        /// <summary>
+        /// 管理员个人信息跳转
+        /// </summary>
+        /// <returns></returns>
+        /// 暂时存在(此 ObjectContext 实例已释放，不可再用于需要连接的操作。)问题
+        public ActionResult InformationJump()
+        {
+            var userid = Request["id"].ToInt();
+            if(userid>0)
+            {
+                using (var club=new ClubEntitie())
+                {
+                    var user = club.User.FirstOrDefault(a => a.id == userid);
+                    Session["loginuser"] = user;
+                }
+                return Redirect("/User/Index?id=" + userid);
+            }
+            return View();
         }
     }
 }

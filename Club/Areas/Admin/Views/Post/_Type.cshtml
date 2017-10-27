@@ -16,7 +16,7 @@
             <th>操作</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="tablesum">
         @{
             foreach (var item in Model)
             {
@@ -30,7 +30,8 @@
                     <td>@item.Name</td>
                     <td>
                         <div class="hidden-sm hidden-xs action-buttons">
-                            <a href="/Admin/Post/TypeInformation?id=@item.id">修改</a><a href="/Admin/Post/TypeEdit?id=@item.id">删除</a>
+                            <a href="/Admin/Post/TypeInformation?id=@item.id">修改</a>
+                            <a href="/Admin/Post/TypeEdit?id=@item.id">删除</a>
                         </div>
                     </td>
                 </tr>
@@ -38,6 +39,16 @@
         }
     </tbody>
 </table>
+<script>
+    //判断表格数量是否需要追加
+    var pagesize = $('#pagesize').val();
+    var trsum = $('.tablesum').children('tr').length;
+    if (trsum < pagesize) {
+        for (var i = trsum; i < pagesize; i++) {
+            $('.tablesum').append("<tr><td><label class=" + "position-relative" + "></label ></td><td></td><td></td></tr >");
+        }
+    }
+</script>
 @Ajax.Pager(Model, new PagerOptions
 {
     AutoHide = false,

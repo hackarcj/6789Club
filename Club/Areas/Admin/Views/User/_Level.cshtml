@@ -16,7 +16,7 @@
             <th>操作</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="tablesum">
         @{
             foreach (var item in Model)
             {
@@ -38,6 +38,16 @@
         }
     </tbody>
 </table>
+<script>
+    //判断表格数量是否需要追加
+    var pagesize = $('#pagesize').val();
+    var trsum = $('.tablesum').children('tr').length;
+    if (trsum < pagesize) {
+        for (var i = trsum; i < pagesize; i++) {
+            $('.tablesum').append("<tr><td><label class=" + "position-relative" + "></label ></td><td></td><td></td></tr >");
+        }
+    }
+</script>
 @Ajax.Pager(Model, new PagerOptions
 {
     AutoHide = false,

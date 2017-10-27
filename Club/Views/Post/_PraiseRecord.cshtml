@@ -7,7 +7,7 @@
     @{
         foreach (var item in Model)
         {
-            <a><img src="@item.userimage" width="30" height="30" class="bd-r-15" /></a>
+            <a href="/User/Index?userid=@item.userid"><img src="@item.userimage" width="30" height="30" class="bd-r-15" /></a>
         }
     }    
 </div>

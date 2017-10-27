@@ -38,6 +38,7 @@
           <Property Name="Image" Type="nvarchar" MaxLength="500" />
           <Property Name="IsFeatured" Type="bit" Nullable="false" />
           <Property Name="IsAbout" Type="bit" Nullable="false" />
+          <Property Name="Recoverytime" Type="datetime" />
         </EntityType>
         <EntityType Name="PraiseRecord">
           <Key>
@@ -74,6 +75,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="IsAbout" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -330,6 +332,7 @@
           <Property Name="Image" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="IsFeatured" Type="Boolean" Nullable="false" />
           <Property Name="IsAbout" Type="Boolean" Nullable="false" />
+          <Property Name="Recoverytime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Collection" Relationship="ClubModel.FK_Collection_Post" FromRole="Post" ToRole="Collection" />
           <NavigationProperty Name="Type" Relationship="ClubModel.FK_Post_Type1" FromRole="Post" ToRole="Type" />
           <NavigationProperty Name="User" Relationship="ClubModel.FK_Post_User1" FromRole="Post" ToRole="User" />
@@ -375,6 +378,7 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IsAbout" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Post" Relationship="ClubModel.FK_Post_Type1" FromRole="Type" ToRole="Post" />
         </EntityType>
         <EntityType Name="User">
@@ -533,6 +537,7 @@
           <EntitySetMapping Name="Post">
             <EntityTypeMapping TypeName="ClubModel.Post">
               <MappingFragment StoreEntitySet="Post">
+                <ScalarProperty Name="Recoverytime" ColumnName="Recoverytime" />
                 <ScalarProperty Name="IsAbout" ColumnName="IsAbout" />
                 <ScalarProperty Name="IsFeatured" ColumnName="IsFeatured" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
@@ -583,6 +588,7 @@
           <EntitySetMapping Name="Type">
             <EntityTypeMapping TypeName="ClubModel.Type">
               <MappingFragment StoreEntitySet="Type">
+                <ScalarProperty Name="IsAbout" ColumnName="IsAbout" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>

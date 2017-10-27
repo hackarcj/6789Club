@@ -18,20 +18,54 @@
     </style>
     <div class="row">
         <div class="col-xs-12">
-            <div>    
+            <div>
+                <div class="row mt15">                    
+                    <div class="col-xs-3">
+                        <div class="dataTables_length" id="sample-table-2_length">
+                            <a id="batchaudit" class="btn btn-sm btn-primary">审核</a><a id="batchdeletion" class="btn btn-sm btn-primary">删除</a>
+                        </div>
+                    </div>
+                </div>
                 <div class="row mt15">
-                    <div class="col-xs-6">
+                    <div class="col-xs-1">
+                        <div class="dataTables_length" id="sample-table-2_length">
+                            <label>                                
+                                <select id="pagesize" name="sample-table-2_length" aria-controls="sample-table-2" class="form-control input-sm">
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>            
+                    <div class="col-xs-1">
+                        <div class="dataTables_length" id="sample-table-2_length">
+                            <label>                                
+                                <select id="isselect" name="sample-table-2_length" aria-controls="sample-table-2" class="form-control input-sm">
+                                    <option value="2">全部</option>
+                                    <option value="0">未审核</option>
+                                    <option value="1">已审核</option>                                    
+                                </select>
+                            </label>
+                        </div>
+                    </div> 
+                    <div class="col-xs-2">
+                        <div class="dataTables_length" id="sample-table-2_length">
+                            <label>
+                                @Html.DropDownList("typeid", new SelectList(ViewBag.type, "Value", "Text"), new { @class = " form-control input-sm",@style="width:100px;" })
+                            </label>
+                        </div>
+                    </div> 
+                    <div class="col-xs-5">
                         <div class="ch_choose_top">
                             <div class="h_top_txt">
                                 <input id="keyword" class="h_search_txt" name="kw" type="text" placeholder="请输入关键词" value="@ViewBag.KW">
                             </div>
-
                             <input id="search" class="h_button" type="submit" value="查询">
-
                             <div style="clear: both;"></div>
                         </div>
-                    </div>
-                    
+                    </div>                    
                 </div>
                 @using (Html.BeginForm("Index", "Post", FormMethod.Get))
                 {

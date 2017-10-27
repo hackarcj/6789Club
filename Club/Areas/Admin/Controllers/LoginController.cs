@@ -22,7 +22,7 @@ namespace Club.Areas.Admin.Controllers
             var psw = Request["password"];
             if(string.IsNullOrEmpty(account) || string.IsNullOrEmpty(psw))
             {
-                TempData["login"] = "用户名或密码不能为空";
+                ShowMassage("用户名或密码不能为空");
                 return RedirectToAction("Index");
             }
             using (var club = new ClubEntitie())
@@ -31,19 +31,31 @@ namespace Club.Areas.Admin.Controllers
                 var user = club.User.FirstOrDefault(a => a.Account == account);
                 if (user == null)
                 {
-                    TempData["login"] = "用户名不存在";
+                    ShowMassage("用户名不存在");
                     return RedirectToAction("Index");
                 }
                 if (user.Password != psw)
                 {
-                    TempData["login"] = "密码错误";
-                    TempData["account"] = account;
+                    ShowMassage("密码错误");                    
+                    return RedirectToAction("Index");
+                }
+                if(!user.IsAdmin)
+                {
+                    ShowMassage("你不是管理员，无权登录");
                     return RedirectToAction("Index");
                 }
                 Session["adminuser"] = user;
-                ViewBag.username = account;
             }
-            return Redirect("/Admin/Home");
+            return Redirect("/Admin/Post");
+        }
+        /// <summary>
+        /// 退出
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SignOut()
+        {
+            Session["adminuser"] = null;
+            return RedirectToAction("Index");
         }
     }
 }

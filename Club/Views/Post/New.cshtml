@@ -45,7 +45,7 @@
             <!--header-->
             <div class="uz-h-55 pa-t-15">
                 <div class="ma-l-30">
-                    <a href="#" class="culb">6789Club</a>
+                    <a href="/Post/Index" class="culb">6789Club</a>
                     <div class="left ma-l-15  search-main">
                         <input type="text" class="search" placeholder="请输入您需要查找的内容 …" />
                     </div>
@@ -54,23 +54,18 @@
                     var user = (User)Session["loginuser"];
                     if (Session["loginuser"] != null)
                     {
-                        <ul class="uz-w-180 right ma-r-15">
-                            <li>
-                                <a href="/User" title="@user.Name" style="padding: 15px 5px; line-height: 30px;" class=" f-c-gray">
-                                    <img alt="image" id="my-avatar" class="img-circle profile-small-avatar uz-h-26 uz-w-26" src="@user.Image">
-                                    <span class="mobile-hide">@user.Name</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-toggle" href="/Notice"><i class="fa fa-bell-o header-ico"></i></a>
-                            </li>
-                            <li>
-                                <a>
-                                    <i class="fa fa-sign-out header-ico" onclick="p.utk(''); layer.msg('退成成功',function(){reload()});">
-                                    </i>
-                                </a>
-                            </li>
-                        </ul>
+                        <div class="uz-w-180 right">
+                            <a href='/User/Index' class="ma-r-4">
+                                <img alt="image" src="@user.Image" width="26" height="26" class="bd-r-13" />
+                                <span class="ma-r-15 f-c-gray">@user.Name</span>
+                            </a>
+                            <a href="/Notice" class="ma-r-4">
+                                <img alt="image" src="/Content/img/pic_01.gif" width="26" height="26" />
+                            </a>
+                            <a href="/User/Introduction">
+                                <img src="/Content/img/pic_02.gif" width="26" height="26" />
+                            </a>
+                        </div>
                     }
                     else
                     {
@@ -82,7 +77,7 @@
                 }
             </div>
             <!--蓝条-->
-            <div class="blue-bar"></div>
+            <div class="blue-bar"><a href="/Post/Index">主页 / 发帖</a></div>
             <!--main-->
             <div class="inline-flex f-wrap f-just-s ux-w-100">
                 <div class="ma-t-20 ux-w-95">
@@ -152,8 +147,42 @@
                     $('#titleinput').css('border-color', '#cccccc');
                 }
             }
+            //获取客户端操作系统
+            function detectOS() {
+                var sUserAgent = navigator.userAgent;
+                var isWin = (navigator.platform == "Win32") || (navigator.platform == "Windows");
+                var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
+                if (isMac) return "Mac";
+                var isUnix = (navigator.platform == "X11") && !isWin && !isMac;
+                if (isUnix) return "Unix";
+                var isLinux = (String(navigator.platform).indexOf("Linux") > -1);
+                var bIsAndroid = sUserAgent.toLowerCase().match(/android/i) == "android";
+                if (isLinux) {
+                    if (bIsAndroid) return "Android";
+                    else return "Linux";
+                }
+                if (isWin) {
+                    var isWin2K = sUserAgent.indexOf("Windows NT 5.0") > -1 || sUserAgent.indexOf("Windows 2000") > -1;
+                    if (isWin2K) return "Windows 2000";
+                    var isWinXP = sUserAgent.indexOf("Windows NT 5.1") > -1 ||
+                        sUserAgent.indexOf("Windows XP") > -1;
+                    if (isWinXP) return "Windows XP";
+                    var isWin2003 = sUserAgent.indexOf("Windows NT 5.2") > -1 || sUserAgent.indexOf("Windows 2003") > -1;
+                    if (isWin2003) return "Windows 2003";
+                    var isWinVista = sUserAgent.indexOf("Windows NT 6.0") > -1 || sUserAgent.indexOf("Windows Vista") > -1;
+                    if (isWinVista) return "Windows Vista";
+                    var isWin7 = sUserAgent.indexOf("Windows NT 6.1") > -1 || sUserAgent.indexOf("Windows 7") > -1;
+                    if (isWin7) return "Windows 7";
+                    var isWin8 = sUserAgent.indexOf("Windows NT 6.2") > -1 || sUserAgent.indexOf("Windows 8") > -1;
+                    if (isWin8) return "Windows 8";
+                    var isWin10 = sUserAgent.indexOf("Windows NT 10.0") > -1 || sUserAgent.indexOf("Windows 10") > -1;
+                    if (isWin10) return "Windows 10";
+                }
+                return "other";
+            }            
             //帖子提交
             $('#post-submit').on('click', function () {
+                var OperatingSystem=detectOS();
                 var content = editor.txt.html();
                 var typeId = $('#typeId').val();
                 var title = $('#titleinput').val();
@@ -170,7 +199,7 @@
                         $.ajax({
                             type: "POST",
                             url: "/Post/Save",
-                            data: "typeId=" + typeId + "&title=" + title + "&content=" + content,
+                            data: "typeId=" + typeId + "&title=" + title + "&content=" + content + "&system=" + OperatingSystem,
                             success: function (msg) {
                                 var d = dialog({
                                 title: '提示',

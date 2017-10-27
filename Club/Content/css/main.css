@@ -89,14 +89,15 @@ ul li{
     border-top:1px solid #e7eaec;
     border-bottom:1px solid #e7eaec;
 }
-.ma_lt{
-	width:68px;
-	height:36px;
-	line-height:36px;
-	font-size:10px;
-	text-align:center;
-	color:inherit;
-	background-color:#e7eaec;
+.ma_lt {
+    width: 68px;
+    height: 36px;
+    line-height: 36px;
+    font-size: 10px;
+    text-align: center;
+    color: inherit;
+    background-color: #e7eaec;
+    cursor: pointer;
 }
 .ma_lt:hover{
 	color:inherit;
@@ -179,14 +180,15 @@ ul li{
 	color:#fff;
 	background-color:#337ab7;
 }
-.ma_rmb{
-	float:left;
-	width:50%;
-	height:34px;
-	font-size:12px;
-	line-height:34px;
-	text-align:center;
-	background-color:#e7eaec;
+.ma_rmb {
+    float: left;
+    width: 50%;
+    height: 34px;
+    font-size: 12px;
+    line-height: 34px;
+    text-align: center;
+    background-color: #e7eaec;
+    cursor: pointer;
 }
 .ma_rmb_on{
 	color:white;
@@ -211,17 +213,19 @@ ul li{
 .user_tab li a:hover{
 	color:#676a6c;
 }
-.user_tab_li{
-	border:1px solid #ddd;
-	border-radius:4px;
-	margin-right:1px;
-	border-bottom:1px solid #FFF;
+.user_tab_li {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-right: 1px;
+    border-bottom: 1px solid #FFF;
+    cursor: pointer;
 }
-.user_tab_lis:hover{
-	color:#676a6c;
-	border:1px solid #fff;
-	border-radius:4px;
-	background-color:#ddd;
+.user_tab_lis:hover {
+    color: #676a6c;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    background-color: #ddd;
+    cursor: pointer;
 }
 .user_c{
 	color:white;

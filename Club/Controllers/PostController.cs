@@ -21,7 +21,7 @@ namespace Club.Controllers
         public ActionResult Index(int?id)
         {
             var pageIndex = id ?? 1;
-            int pageSize = 10;
+            int pageSize = 6;
             //自定义 
             //      key==1 为搜索
             //      key==2 为帖子最新发布和回复选择
@@ -33,7 +33,17 @@ namespace Club.Controllers
             {
                 var type = db.Type.ToList();
                 ViewBag.type = type;
-                var post = db.Post.OrderByDescending(a => a.id).Include(a => a.User).Include(a => a.Type).Where(a => a.IsFeatured == true).ToList();
+                //会员数量                
+                var user = db.User.Where(a => a.Levelid == 2).ToList();
+                ViewBag.MemberNumber = user.Count();
+                //帖子数量
+                var post = db.Post.ToList();                
+                ViewBag.PostNumber = post.Count();
+                //精品数量         
+                post = post.Where(a => a.Essence == 1).ToList();
+                ViewBag.BoutiqueNumber = post.Count();
+                post = db.Post.OrderByDescending(a => a.Recoverytime).Include(a => a.User).Include(a => a.Type).Where(a => a.IsFeatured == true).ToList();
+                var reply = new List<Reply>();
                 //按帖子类型查找
                 switch(key)
                 {
@@ -41,11 +51,21 @@ namespace Club.Controllers
                         post = post.Where(a => a.Title.Contains(value) || a.User.Name.Contains(value)).ToList();
                         break;
                     case 2:
+                        var tabid = value.ToInt();
+                        switch(tabid)
+                        {
+                            case 2:
+                                post = post.OrderByDescending(a => a.Time).ToList();
+                                break;
+                            case 3:
+                                post = post.Where(a => a.Essence == 1).ToList();
+                                break;
+                        }
                         break;
                     case 3:
                         var typeid = value.ToInt();
                         //typeid==0  全部帖子
-                        if(typeid!=0)
+                        if(typeid>0)
                         {
                             post = post.Where(a => a.Typeid == typeid).ToList();
                         }                        
@@ -54,7 +74,7 @@ namespace Club.Controllers
                 foreach (var item in post)
                 {
                     var postModel = new ListPostModel();
-                    var reply = db.Reply.Where(a => a.id == item.id);
+                    var postreply = db.Reply.Where(a => a.Postid == item.id).ToList();
                     postModel.id = item.id;
                     postModel.title = item.Title;
                     postModel.userid = item.Userid;
@@ -62,7 +82,7 @@ namespace Club.Controllers
                     postModel.image = item.User.Image;
                     postModel.time = item.Time;
                     postModel.visit = item.Visit;
-                    postModel.relpy = reply.Count();
+                    postModel.relpy = postreply.Count();
                     if(item.Essence==1)
                     {
                         postModel.essence = "精";
@@ -108,6 +128,7 @@ namespace Club.Controllers
             var typeId = Request["typeId"].ToInt();
             var title = Request["title"];
             var content = Request["content"];
+            var system = Request["system"];
             var loginUser = (User)Session["loginuser"];
             using (var db=new ClubEntitie())
             {
@@ -116,7 +137,7 @@ namespace Club.Controllers
                 post.Contents = content;
                 post.Userid = loginUser.id;
                 post.Typeid = typeId;
-                post.System = "Win10";
+                post.System = system;
                 post.Time = DateTime.Now;
                 db.Post.Add(post);
                 db.SaveChanges();
@@ -130,7 +151,7 @@ namespace Club.Controllers
         public ActionResult Browse()
         {
             var postid = Request["postid"].ToInt();
-            if(postid!=0)
+            if(postid>0)
             {
                 using (var db=new ClubEntitie())
                 {
@@ -138,7 +159,7 @@ namespace Club.Controllers
                     var user = db.User.OrderByDescending(a => a.id).Include(a => a.Level).ToList();                    
                     ViewBag.User = user;
                     //查询赞帖子的用户
-                    var praiserecord = db.PraiseRecord.OrderByDescending(a => a.id).Include(a => a.User).ToList();
+                    var praiserecord = db.PraiseRecord.OrderByDescending(a => a.id).Include(a => a.User).Where(a=>a.Postid==postid).ToList();
                     ViewBag.praiserecord = praiserecord;
                     var listpraiserecord = new List<PraiserecordModel>();
                     foreach (var item in praiserecord)
@@ -170,7 +191,10 @@ namespace Club.Controllers
                         replyModel.recoverytime = item.Recoverytime;
                         listreply.Add(replyModel);
                     }
-                    ViewData["reply"] = listreply;                    
+                    ViewData["reply"] = listreply;
+                    //更新帖子访问量
+                    post.Visit += 1;
+                    db.SaveChanges();
                     return View(post);                    
                 }                
             }
@@ -189,18 +213,21 @@ namespace Club.Controllers
             using (var db=new ClubEntitie())
             {
                 var reply = new Reply();
+                var post = db.Post.FirstOrDefault(a => a.id == postid);
                 reply.Postid = postid;
                 reply.Userid = userid;
                 reply.Contents = content;
                 reply.Recoverytime = DateTime.Now;
+                //更新帖子最新的回复时间
+                post.Recoverytime = DateTime.Now;
                 db.Reply.Add(reply);
                 db.SaveChanges();
                 //查询帖子回复的信息
-                var listreply = db.Reply.OrderByDescending(a => a.id).Include(a => a.User).Where(a => a.Postid == postid).ToList();
-                var replyModel = new ReplyModel();
+                var listreply = db.Reply.OrderByDescending(a => a.id).Include(a => a.User).Where(a => a.Postid == postid).ToList();                
                 var listreplymodel = new List<ReplyModel>();
                 foreach (var item in listreply)
                 {
+                    var replyModel = new ReplyModel();
                     replyModel.postid = item.Postid;
                     replyModel.userid = item.Userid;
                     replyModel.username = item.User.Name;
@@ -218,7 +245,7 @@ namespace Club.Controllers
             return View();
         }
         /// <summary>
-        /// 用户赞贴
+        /// 用户赞贴、收藏
         /// </summary>
         /// <returns></returns>
         public ActionResult PraiseCollect()
@@ -247,7 +274,7 @@ namespace Club.Controllers
                     db.SaveChanges();
                 }
                 //查询赞帖子的用户
-                var praiserecords = db.PraiseRecord.OrderByDescending(a => a.id).Include(a => a.User).ToList();
+                var praiserecords = db.PraiseRecord.OrderByDescending(a => a.id).Include(a => a.User).Where(a=>a.Postid==postid).ToList();
                 ViewBag.praiserecord = praiserecords;
                 var listpraiserecord = new List<PraiserecordModel>();
                 foreach (var item in praiserecords)

@@ -314,7 +314,6 @@ namespace Club.Areas.Admin.Controllers
         /// 管理员个人信息跳转
         /// </summary>
         /// <returns></returns>
-        /// 暂时存在(此 ObjectContext 实例已释放，不可再用于需要连接的操作。)问题
         public ActionResult InformationJump()
         {
             var userid = Request["id"].ToInt();
@@ -322,7 +321,7 @@ namespace Club.Areas.Admin.Controllers
             {
                 using (var club=new ClubEntitie())
                 {
-                    var user = club.User.FirstOrDefault(a => a.id == userid);
+                    var user = club.User.Include(a=>a.Level).FirstOrDefault(a => a.id == userid);
                     Session["loginuser"] = user;
                 }
                 return Redirect("/User/Index?id=" + userid);

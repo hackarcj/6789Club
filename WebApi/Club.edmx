@@ -1,0 +1,637 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ClubModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Collection">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Postid" Type="int" Nullable="false" />
+          <Property Name="Userid" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="IsCollection" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Level">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Contents" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Userid" Type="int" Nullable="false" />
+          <Property Name="Time" Type="datetime" Nullable="false" />
+          <Property Name="System" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Visit" Type="int" Nullable="false" />
+          <Property Name="Typeid" Type="int" Nullable="false" />
+          <Property Name="Essence" Type="int" Nullable="false" />
+          <Property Name="Image" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsFeatured" Type="bit" Nullable="false" />
+          <Property Name="IsAbout" Type="bit" Nullable="false" />
+          <Property Name="Recoverytime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PraiseRecord">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Postid" Type="int" Nullable="false" />
+          <Property Name="Userid" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reply">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Postid" Type="int" Nullable="false" />
+          <Property Name="Userid" Type="int" Nullable="false" />
+          <Property Name="Contents" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Recoverytime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="IsAbout" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Account" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Levelid" Type="int" Nullable="false" />
+          <Property Name="Gold" Type="int" Nullable="false" />
+          <Property Name="Image" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsAdmin" Type="bit" Nullable="false" />
+          <Property Name="IsAbort" Type="bit" Nullable="false" />
+          <Property Name="RegistrationTime" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_Collection_Post">
+          <End Role="Post" Type="Self.Post" Multiplicity="1" />
+          <End Role="Collection" Type="Self.Collection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Collection">
+              <PropertyRef Name="Postid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Collection_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Collection" Type="Self.Collection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Collection">
+              <PropertyRef Name="Userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Post_Type1">
+          <End Role="Type" Type="Self.Type" Multiplicity="1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="Typeid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Post_User1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="Userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PraiseRecord_Post">
+          <End Role="Post" Type="Self.Post" Multiplicity="1" />
+          <End Role="PraiseRecord" Type="Self.PraiseRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PraiseRecord">
+              <PropertyRef Name="Postid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PraiseRecord_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="PraiseRecord" Type="Self.PraiseRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PraiseRecord">
+              <PropertyRef Name="Userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reply_Post">
+          <End Role="Post" Type="Self.Post" Multiplicity="1" />
+          <End Role="Reply" Type="Self.Reply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Reply">
+              <PropertyRef Name="Postid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reply_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Reply" Type="Self.Reply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Reply">
+              <PropertyRef Name="Userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Level">
+          <End Role="Level" Type="Self.Level" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="Levelid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ClubModelStoreContainer">
+          <EntitySet Name="Collection" EntityType="Self.Collection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Level" EntityType="Self.Level" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PraiseRecord" EntityType="Self.PraiseRecord" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reply" EntityType="Self.Reply" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Type" EntityType="Self.Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Collection_Post" Association="Self.FK_Collection_Post">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="Collection" EntitySet="Collection" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Collection_User" Association="Self.FK_Collection_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Collection" EntitySet="Collection" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Post_Type1" Association="Self.FK_Post_Type1">
+            <End Role="Type" EntitySet="Type" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Post_User1" Association="Self.FK_Post_User1">
+            <End Role="User" EntitySet="User" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PraiseRecord_Post" Association="Self.FK_PraiseRecord_Post">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="PraiseRecord" EntitySet="PraiseRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PraiseRecord_User" Association="Self.FK_PraiseRecord_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="PraiseRecord" EntitySet="PraiseRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reply_Post" Association="Self.FK_Reply_Post">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="Reply" EntitySet="Reply" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reply_User" Association="Self.FK_Reply_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Reply" EntitySet="Reply" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Level" Association="Self.FK_User_Level">
+            <End Role="Level" EntitySet="Level" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ClubModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Collection">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Postid" Type="Int32" Nullable="false" />
+          <Property Name="Userid" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsCollection" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Post" Relationship="Self.FK_Collection_Post" FromRole="Collection" ToRole="Post" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Collection_User" FromRole="Collection" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Level">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_User_Level" FromRole="Level" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Contents" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Userid" Type="Int32" Nullable="false" />
+          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="System" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Visit" Type="Int32" Nullable="false" />
+          <Property Name="Typeid" Type="Int32" Nullable="false" />
+          <Property Name="Essence" Type="Int32" Nullable="false" />
+          <Property Name="Image" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsFeatured" Type="Boolean" Nullable="false" />
+          <Property Name="IsAbout" Type="Boolean" Nullable="false" />
+          <Property Name="Recoverytime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Collection" Relationship="Self.FK_Collection_Post" FromRole="Post" ToRole="Collection" />
+          <NavigationProperty Name="Type" Relationship="Self.FK_Post_Type1" FromRole="Post" ToRole="Type" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Post_User1" FromRole="Post" ToRole="User" />
+          <NavigationProperty Name="PraiseRecord" Relationship="Self.FK_PraiseRecord_Post" FromRole="Post" ToRole="PraiseRecord" />
+          <NavigationProperty Name="Reply" Relationship="Self.FK_Reply_Post" FromRole="Post" ToRole="Reply" />
+        </EntityType>
+        <EntityType Name="PraiseRecord">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Postid" Type="Int32" Nullable="false" />
+          <Property Name="Userid" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Post" Relationship="Self.FK_PraiseRecord_Post" FromRole="PraiseRecord" ToRole="Post" />
+          <NavigationProperty Name="User" Relationship="Self.FK_PraiseRecord_User" FromRole="PraiseRecord" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Reply">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Postid" Type="Int32" Nullable="false" />
+          <Property Name="Userid" Type="Int32" Nullable="false" />
+          <Property Name="Contents" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Recoverytime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Post" Relationship="Self.FK_Reply_Post" FromRole="Reply" ToRole="Post" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Reply_User" FromRole="Reply" ToRole="User" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsAbout" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Post" Relationship="Self.FK_Post_Type1" FromRole="Type" ToRole="Post" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Levelid" Type="Int32" Nullable="false" />
+          <Property Name="Gold" Type="Int32" Nullable="false" />
+          <Property Name="Image" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+          <Property Name="IsAbort" Type="Boolean" Nullable="false" />
+          <Property Name="RegistrationTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Collection" Relationship="Self.FK_Collection_User" FromRole="User" ToRole="Collection" />
+          <NavigationProperty Name="Level" Relationship="Self.FK_User_Level" FromRole="User" ToRole="Level" />
+          <NavigationProperty Name="Post" Relationship="Self.FK_Post_User1" FromRole="User" ToRole="Post" />
+          <NavigationProperty Name="PraiseRecord" Relationship="Self.FK_PraiseRecord_User" FromRole="User" ToRole="PraiseRecord" />
+          <NavigationProperty Name="Reply" Relationship="Self.FK_Reply_User" FromRole="User" ToRole="Reply" />
+        </EntityType>
+        <Association Name="FK_Collection_Post">
+          <End Role="Post" Type="Self.Post" Multiplicity="1" />
+          <End Role="Collection" Type="Self.Collection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Collection">
+              <PropertyRef Name="Postid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Collection_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Collection" Type="Self.Collection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Collection">
+              <PropertyRef Name="Userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Level">
+          <End Role="Level" Type="Self.Level" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="Levelid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Post_Type1">
+          <End Role="Type" Type="Self.Type" Multiplicity="1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="Typeid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Post_User1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="Userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PraiseRecord_Post">
+          <End Role="Post" Type="Self.Post" Multiplicity="1" />
+          <End Role="PraiseRecord" Type="Self.PraiseRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PraiseRecord">
+              <PropertyRef Name="Postid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reply_Post">
+          <End Role="Post" Type="Self.Post" Multiplicity="1" />
+          <End Role="Reply" Type="Self.Reply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Reply">
+              <PropertyRef Name="Postid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PraiseRecord_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="PraiseRecord" Type="Self.PraiseRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PraiseRecord">
+              <PropertyRef Name="Userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reply_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Reply" Type="Self.Reply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Reply">
+              <PropertyRef Name="Userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ClubEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Collection" EntityType="Self.Collection" />
+          <EntitySet Name="Level" EntityType="Self.Level" />
+          <EntitySet Name="Post" EntityType="Self.Post" />
+          <EntitySet Name="PraiseRecord" EntityType="Self.PraiseRecord" />
+          <EntitySet Name="Reply" EntityType="Self.Reply" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Type" EntityType="Self.Type" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <AssociationSet Name="FK_Collection_Post" Association="Self.FK_Collection_Post">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="Collection" EntitySet="Collection" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Collection_User" Association="Self.FK_Collection_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Collection" EntitySet="Collection" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Level" Association="Self.FK_User_Level">
+            <End Role="Level" EntitySet="Level" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Post_Type1" Association="Self.FK_Post_Type1">
+            <End Role="Type" EntitySet="Type" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Post_User1" Association="Self.FK_Post_User1">
+            <End Role="User" EntitySet="User" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PraiseRecord_Post" Association="Self.FK_PraiseRecord_Post">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="PraiseRecord" EntitySet="PraiseRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reply_Post" Association="Self.FK_Reply_Post">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="Reply" EntitySet="Reply" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PraiseRecord_User" Association="Self.FK_PraiseRecord_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="PraiseRecord" EntitySet="PraiseRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reply_User" Association="Self.FK_Reply_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Reply" EntitySet="Reply" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ClubModelStoreContainer" CdmEntityContainer="ClubEntities">
+          <EntitySetMapping Name="Collection">
+            <EntityTypeMapping TypeName="ClubModel.Collection">
+              <MappingFragment StoreEntitySet="Collection">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Postid" ColumnName="Postid" />
+                <ScalarProperty Name="Userid" ColumnName="Userid" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="IsCollection" ColumnName="IsCollection" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Level">
+            <EntityTypeMapping TypeName="ClubModel.Level">
+              <MappingFragment StoreEntitySet="Level">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Post">
+            <EntityTypeMapping TypeName="ClubModel.Post">
+              <MappingFragment StoreEntitySet="Post">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Contents" ColumnName="Contents" />
+                <ScalarProperty Name="Userid" ColumnName="Userid" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="System" ColumnName="System" />
+                <ScalarProperty Name="Visit" ColumnName="Visit" />
+                <ScalarProperty Name="Typeid" ColumnName="Typeid" />
+                <ScalarProperty Name="Essence" ColumnName="Essence" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="IsFeatured" ColumnName="IsFeatured" />
+                <ScalarProperty Name="IsAbout" ColumnName="IsAbout" />
+                <ScalarProperty Name="Recoverytime" ColumnName="Recoverytime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PraiseRecord">
+            <EntityTypeMapping TypeName="ClubModel.PraiseRecord">
+              <MappingFragment StoreEntitySet="PraiseRecord">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Postid" ColumnName="Postid" />
+                <ScalarProperty Name="Userid" ColumnName="Userid" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reply">
+            <EntityTypeMapping TypeName="ClubModel.Reply">
+              <MappingFragment StoreEntitySet="Reply">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Postid" ColumnName="Postid" />
+                <ScalarProperty Name="Userid" ColumnName="Userid" />
+                <ScalarProperty Name="Contents" ColumnName="Contents" />
+                <ScalarProperty Name="Recoverytime" ColumnName="Recoverytime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ClubModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Type">
+            <EntityTypeMapping TypeName="ClubModel.Type">
+              <MappingFragment StoreEntitySet="Type">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsAbout" ColumnName="IsAbout" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="ClubModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Levelid" ColumnName="Levelid" />
+                <ScalarProperty Name="Gold" ColumnName="Gold" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+                <ScalarProperty Name="IsAbort" ColumnName="IsAbort" />
+                <ScalarProperty Name="RegistrationTime" ColumnName="RegistrationTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

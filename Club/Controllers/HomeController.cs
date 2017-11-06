@@ -12,37 +12,26 @@ namespace Club.Controllers
     {
         public ActionResult Index()
         {
-
-            using (var club = new ClubEntitie())
+            var time = DateTime.Now;
+            //把时分秒初始化为0
+            time = new DateTime(time.Year, time.Month, time.Day, 0, 0, 0, 0);
+            //获取一周的时间段
+            //获取当前是周几                
+            var week = Convert.ToInt32(time.DayOfWeek);
+            //判断 week==0 则为周日
+            if (week == 0)
             {
-                //添加
-                //var level = new Level();
-                //level.Name = "帮主";
-                //club.Level.Add(level);
-                //club.SaveChanges();
-
-                //删除
-                //var level = club.Level.FirstOrDefault(a => a.id == 3);
-                //if(level!=null)
-                //{
-                //    club.Level.Remove(level);
-                //    club.SaveChanges();
-                //}
-
-                //查找
-                //var level = club.Level.Where(a => a.id == 1).ToList();
-                //if(level!=null)
-                //{
-                //    var str = new StringBuilder();
-                //    foreach (var item in level)
-                //    {
-                //        str.AppendLine("id:" + item.id + " name:" + item.Name);                        
-                //    }
-                //    return Content(str.ToString());
-                //}
-
+                week = 7;
             }
-            return Content("ok");
+            //当前这周周一日期
+            var Monday = time.AddDays(1 - week);
+
+            //获取一个月的时间段                  
+            //获取这个月的1号
+            var firstday = time.AddDays(1 - time.Day);            
+            //获取这个月的月末
+            var ednday = firstday.AddMonths(1).AddDays(-1);
+            return View("ok");
         }
 
         public ActionResult About()
